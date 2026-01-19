@@ -5,21 +5,13 @@ import org.hibernate.cfg.Configuration;
 
 public class HibernateUtil {
 
-    // Singleton паттерн - один экземпляр SessionFactory на всё приложение
     private static SessionFactory sessionFactory;
 
-    // Статический блок - выполняется один раз при загрузке класса
     static {
         try {
-            // Создаем Configuration объект
             Configuration configuration = new Configuration();
-
-            // Загружаем настройки из hibernate.cfg.xml
-            // Файл должен быть в src/main/resources/
             configuration.configure("hibernate.cfg.xml");
 
-            // Создаем SessionFactory - фабрику для создания Session
-            // Это ТЯЖЕЛАЯ операция, делаем ОДИН раз!
             sessionFactory = configuration.buildSessionFactory();
 
             System.out.println("✅ SessionFactory успешно создана");
@@ -32,12 +24,10 @@ public class HibernateUtil {
         }
     }
 
-    // Получить SessionFactory
     public static SessionFactory getSessionFactory() {
         return sessionFactory;
     }
 
-    // Закрыть SessionFactory при завершении приложения
     public static void shutdown() {
         if (sessionFactory != null && !sessionFactory.isClosed()) {
             sessionFactory.close();
