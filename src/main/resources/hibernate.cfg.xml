@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+
+        <!-- ============================================ -->
+        <!-- HIKARICP CONNECTION PROVIDER -->
+        <!-- ============================================ -->
+
+        <!-- Указываем Hibernate использовать HikariCP вместо встроенного пула -->
+        <property name="hibernate.connection.provider_class">
+            org.hibernate.hikaricp.internal.HikariCPConnectionProvider
+        </property>
+
+        <!-- ============================================ -->
+        <!-- HIKARICP DATASOURCE -->
+        <!-- ============================================ -->
+
+        <!-- Класс DataSource для H2 -->
+        <!-- DataSource = фабрика для создания соединений с БД -->
+        <property name="hibernate.hikari.dataSourceClassName">
+            org.h2.jdbcx.JdbcDataSource
+        </property>
+
+        <!-- URL подключения к H2 базе данных -->
+        <!-- jdbc:h2:mem:testdb - БД в памяти с именем "testdb" -->
+        <!-- DB_CLOSE_DELAY=-1 - не закрывать БД пока работает JVM -->
+        <!-- MODE=PostgreSQL - режим совместимости с PostgreSQL (опционально) -->
+        <property name="hibernate.hikari.dataSource.url">
+            jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
+        </property>
+
+        <!-- Имя пользователя БД -->
+        <!-- "sa" = System Administrator (стандартный логин H2) -->
+        <property name="hibernate.hikari.dataSource.user">sa</property>
+
+        <!-- Пароль пользователя -->
+        <!-- Пустой по умолчанию для H2 -->
+        <property name="hibernate.hikari.dataSource.password"></property>
+
+        <!-- ============================================ -->
+        <!-- HIKARICP POOL SIZE -->
+        <!-- ============================================ -->
+
+        <!-- Минимальное количество "ленивых" соединений в пуле -->
+        <!-- Эти соединения просто ждут, готовые к использованию -->
+        <!-- 5 = всегда будет минимум 5 открытых соединений -->
+        <property name="hibernate.hikari.minimumIdle">5</property>
+
+        <!-- Максимальное количество соединений в пуле -->
+        <!-- 20 = не больше 20 одновременных соединений к БД -->
+        <!-- Превышение = приложение будет ждать освобождения -->
+        <property name="hibernate.hikari.maximumPoolSize">20</property>
+
+        <!-- ============================================ -->
+        <!-- HIKARICP TIMEOUTS (в миллисекундах) -->
+        <!-- ============================================ -->
+
+        <!-- Максимальное время ожидания соединения из пула -->
+        <!-- 30000 мс = 30 секунд -->
+        <!-- Если за 30 сек не получили соединение = exception -->
+        <property name="hibernate.hikari.connectionTimeout">30000</property>
+
+        <!-- Время простоя соединения перед закрытием -->
+        <!-- 600000 мс = 10 минут -->
+        <!-- Если соединение не используется 10 минут = закрывается -->
+        <property name="hibernate.hikari.idleTimeout">600000</property>
+
+        <!-- Максимальное время жизни соединения -->
+        <!-- 1800000 мс = 30 минут -->
+        <!-- Даже активное соединение закроется через 30 минут -->
+        <!-- Это защита от "протухших" соединений -->
+        <property name="hibernate.hikari.maxLifetime">1800000</property>
+
+        <!-- ============================================ -->
+        <!-- HIKARICP ADDITIONAL SETTINGS -->
+        <!-- ============================================ -->
+
+        <!-- Имя пула (для мониторинга и логирования) -->
+        <property name="hibernate.hikari.poolName">HikariPool-Hibernate</property>
+
+        <!-- Автокоммит транзакций -->
+        <!-- false = транзакции управляются вручную (правильно для Hibernate) -->
+        <!-- true = каждый SQL запрос сразу коммитится (плохо!) -->
+        <property name="hibernate.hikari.autoCommit">false</property>
+
+        <!-- Тестовый SQL запрос для проверки соединения -->
+        <!-- Выполняется перед выдачей соединения из пула -->
+        <!-- Если запрос падает = соединение мертвое, создается новое -->
+        <property name="hibernate.hikari.connectionTestQuery">SELECT 1</property>
+
+        <!-- Утечка соединений: порог обнаружения (мс) -->
+        <!-- 60000 мс = 60 секунд -->
+        <!-- Если соединение не возвращено в пул за 60 сек = WARNING в логах -->
+        <!-- Помогает найти места где забыли закрыть Session -->
+        <property name="hibernate.hikari.leakDetectionThreshold">60000</property>
+
+        <!-- ============================================ -->
+        <!-- HIBERNATE DIALECT -->
+        <!-- ============================================ -->
+
+        <!-- Диалект SQL для H2 базы данных -->
+        <!-- Hibernate генерирует SQL специфичный для конкретной БД -->
+        <!-- H2Dialect = SQL в стиле H2 -->
+        <property name="hibernate.dialect">org.hibernate.dialect.H2Dialect</property>
+
+        <!-- ============================================ -->
+        <!-- HIBERNATE DDL (Schema Management) -->
+        <!-- ============================================ -->
+
+        <!-- Автоматическое управление схемой БД -->
+        <!-- create-drop = создает таблицы при старте, удаляет при остановке -->
+        <!-- create = создает таблицы при старте (старые удаляет) -->
+        <!-- update = обновляет схему (добавляет новые таблицы/колонки) -->
+        <!-- validate = только проверяет соответствие -->
+        <!-- none = ничего не делает -->
+        <property name="hibernate.hbm2ddl.auto">create-drop</property>
+
+        <!-- ============================================ -->
+        <!-- HIBERNATE SQL LOGGING -->
+        <!-- ============================================ -->
+
+        <!-- Показывать SQL запросы в консоли -->
+        <!-- true = видишь все SQL, false = тишина -->
+        <property name="hibernate.show_sql">true</property>
+
+        <!-- Форматировать SQL для читаемости -->
+        <!-- true = красивый SQL с переносами строк -->
+        <property name="hibernate.format_sql">true</property>
+
+        <!-- Добавлять комментарии к SQL -->
+        <!-- Показывает откуда пришел запрос (какой метод) -->
+        <property name="hibernate.use_sql_comments">true</property>
+
+        <!-- ============================================ -->
+        <!-- HIBERNATE PERFORMANCE -->
+        <!-- ============================================ -->
+
+        <!-- Размер batch для INSERT/UPDATE операций -->
+        <!-- 20 = группирует до 20 операций в один запрос -->
+        <!-- Ускоряет массовые вставки в 10-20 раз -->
+        <property name="hibernate.jdbc.batch_size">20</property>
+
+        <!-- Упорядочивать INSERT операции -->
+        <!-- true = группирует INSERT'ы одной таблицы вместе -->
+        <!-- Улучшает эффективность batch -->
+        <property name="hibernate.order_inserts">true</property>
+
+        <!-- Упорядочивать UPDATE операции -->
+        <property name="hibernate.order_updates">true</property>
+
+        <!-- Размер fetch для коллекций -->
+        <!-- 16 = загружает до 16 связанных объектов одним запросом -->
+        <!-- Решает проблему N+1 запросов -->
+        <property name="hibernate.default_batch_fetch_size">16</property>
+
+        <!-- ============================================ -->
+        <!-- HIBERNATE SESSION MANAGEMENT -->
+        <!-- ============================================ -->
+
+        <!-- Стратегия управления текущей сессией -->
+        <!-- thread = одна сессия на поток -->
+        <!-- Позволяет использовать getCurrentSession() -->
+        <property name="hibernate.current_session_context_class">thread</property>
+
+        <!-- ============================================ -->
+        <!-- ENTITY MAPPINGS -->
+        <!-- ============================================ -->
+
+        <!-- Регистрация классов-сущностей -->
+        <!-- Укажи все свои @Entity классы -->
+        <mapping class="com.haushekmiva.Player"/>
+        <mapping class="com.haushekmiva.Match"/>
+        <!-- Добавляй свои классы здесь -->
+
+    </session-factory>
+</hibernate-configuration>
