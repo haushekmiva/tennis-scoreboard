@@ -19,7 +19,7 @@ public abstract class HibernateDao<T, ID extends Serializable> {
         this.sessionFactory = sessionFactory;
     }
 
-    public void savePlayer(T entity) {
+    public void save(T entity) {
         Transaction transaction = null;
         try (Session session = getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
