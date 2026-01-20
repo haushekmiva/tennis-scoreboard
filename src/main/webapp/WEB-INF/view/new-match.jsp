@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -6,23 +7,23 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="<c:url value='/css/style.css'/>">
 
-    <script src="js/app.js"></script>
+    <script src="<c:url value='/js/app.js'/>"></script>
 </head>
 <body>
 <header class="header">
     <section class="nav-header">
         <div class="brand">
             <div class="nav-toggle">
-                <img src="images/menu.png" alt="Logo" class="logo">
+                <img src="<c:url value='/images/menu.png'/>" alt="Logo" class="logo">
             </div>
             <span class="logo-text">TennisScoreboard</span>
         </div>
         <div>
             <nav class="nav-links">
-                <a class="nav-link" href="#">Home</a>
-                <a class="nav-link" href="#">Matches</a>
+                <a class="nav-link" href="<c:url value='/'/>">Home</a>
+                <a class="nav-link" href="<c:url value='/matches'/>">Matches</a>
             </nav>
         </div>
     </section>
