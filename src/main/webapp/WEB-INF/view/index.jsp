@@ -26,7 +26,7 @@
         <div>
             <nav class="nav-links">
                 <a class="nav-link" href="<c:url value='/'/>">Home</a>
-                <a class="nav-link" href="<c:url value='/new-match'/>">Matches</a>
+                <a class="nav-link" href="<c:url value='/matches'/>">Matches</a>
             </nav>
         </div>
     </section>
