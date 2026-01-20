@@ -20,4 +20,14 @@ public class NewMatchServlet extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+
+        String firstPlayerName = request.getParameter("firstPlayerName");
+        String secondPlayerName = request.getParameter("secondPlayerName");
+
+        System.out.println(firstPlayerName + " " + secondPlayerName);
+
+    }
+
 }
