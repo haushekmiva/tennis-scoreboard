@@ -5,7 +5,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-import javax.xml.crypto.Data;
 import java.io.Serializable;
 
 public abstract class HibernateDao<T, ID extends Serializable> {
