@@ -1,22 +1,41 @@
 package com.haushekmiva.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class OngoingMatchScore {
 
     private final PlayerScore firstPlayerScore;
     private final PlayerScore secondPlayerScore;
+    private final Map<Integer, PlayerScore> playerScores = new HashMap<>();
 
-    public OngoingMatchScore() {
+    private boolean isTieBreak = false;
 
-        this.firstPlayerScore = new PlayerScore();
-        this.secondPlayerScore = new PlayerScore();
+    public OngoingMatchScore(int firstPlayerId, String firstPlayerName, int secondPlayerId, String secondPlayerName) {
+
+        this.firstPlayerScore = new PlayerScore(firstPlayerId, firstPlayerName);
+        this.secondPlayerScore = new PlayerScore(secondPlayerId, secondPlayerName);
+
+        playerScores.put(firstPlayerId, firstPlayerScore);
+        playerScores.put(secondPlayerId, secondPlayerScore);
 
     }
 
-    public PlayerScore getSecondPlayerScore() {
-        return secondPlayerScore;
+    public PlayerScore getPlayerScore(int playerId) {
+        return playerScores.get(playerId);
     }
 
-    public PlayerScore getFirstPlayerScore() {
-        return firstPlayerScore;
+    public PlayerScore getPlayerEnemyScore(int playerId) {
+        if (firstPlayerScore.getPlayerId() == playerId) {
+            return secondPlayerScore;
+        } else return firstPlayerScore;
+    }
+
+    public void setTieBreak() {
+        this.isTieBreak = !this.isTieBreak;
+    }
+
+    public boolean isTieBreak() {
+        return isTieBreak;
     }
 }

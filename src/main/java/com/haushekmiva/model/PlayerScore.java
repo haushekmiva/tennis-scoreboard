@@ -2,19 +2,34 @@ package com.haushekmiva.model;
 
 public class PlayerScore {
 
+    private final int playerId;
+    private final String  playerName;
     private int point = 0;
     private int game = 0;
     private int set = 0;
 
-    public int getPoint() {
+    public PlayerScore(int playerId, String playerName) {
+        this.playerId = playerId;
+        this.playerName = playerName;
+    }
+
+    public int getPlayerId() {
+        return playerId;
+    }
+
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    public int getPoints() {
         return point;
     }
 
-    public int getGame() {
+    public int getGames() {
         return game;
     }
 
-    public int getSet() {
+    public int getSets() {
         return set;
     }
 
@@ -26,7 +41,7 @@ public class PlayerScore {
         this.game += 1;
     }
 
-    public void setPoint() {
+    public void addPoint() {
         this.point += 1;
     }
 
