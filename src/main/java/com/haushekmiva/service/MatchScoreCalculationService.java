@@ -41,6 +41,13 @@ public class MatchScoreCalculationService {
 
     }
 
-
-
+    public boolean haveAdvantage(OngoingMatchScore score, int playerId) {
+        if (!score.isTieBreak()) {
+            PlayerScore player = score.getPlayerScore(playerId);
+            PlayerScore enemy = score.getPlayerEnemyScore(playerId);
+            if (player.getPoints() >= 3 && enemy.getPoints() >= 3) {
+                return player.getPoints() > enemy.getPoints();
+            }
+        } return false;
+    }
 }
