@@ -42,6 +42,7 @@ public class MatchScoreCalculationService {
     }
 
     public boolean haveAdvantage(OngoingMatchScore score, int playerId) {
+
         if (!score.isTieBreak()) {
             PlayerScore player = score.getPlayerScore(playerId);
             PlayerScore enemy = score.getPlayerEnemyScore(playerId);
