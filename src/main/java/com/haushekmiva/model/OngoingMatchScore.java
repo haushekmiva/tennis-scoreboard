@@ -1,5 +1,6 @@
 package com.haushekmiva.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,6 +9,8 @@ public class OngoingMatchScore {
     private final PlayerScore firstPlayerScore;
     private final PlayerScore secondPlayerScore;
     private final Map<Integer, PlayerScore> playerScores = new HashMap<>();
+
+    private final ArrayList<SetScore> setScores = new ArrayList<SetScore>();
 
     private boolean isTieBreak = false;
 
@@ -29,6 +32,14 @@ public class OngoingMatchScore {
         if (firstPlayerScore.getPlayerId() == playerId) {
             return secondPlayerScore;
         } else return firstPlayerScore;
+    }
+
+    public void addSetScore(SetScore setScore) {
+        setScores.add(setScore);
+    }
+
+    public ArrayList<SetScore> getSetScores() {
+        return setScores;
     }
 
     public void setTieBreak() {
