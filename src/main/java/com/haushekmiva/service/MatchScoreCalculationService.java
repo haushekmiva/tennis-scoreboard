@@ -13,24 +13,25 @@ public class MatchScoreCalculationService {
         serverPlayer.addPoint();
         if (!score.isTieBreak() && serverPlayer.getPoints() >= 4) {
             if (receivingPlayer.getPoints() < 3) {
-                serverPlayer.resetPoint();
+                resetPoints(serverPlayer, receivingPlayer);
                 serverPlayer.addGame();
             } else {
                 if ((serverPlayer.getPoints() - receivingPlayer.getPoints() == 2)) {
-                    serverPlayer.resetPoint();
+                    resetPoints(serverPlayer, receivingPlayer);
                     serverPlayer.addGame();
                 }
             }
         } else {
             if (serverPlayer.getPoints() == 7) {
-                serverPlayer.resetPoint();
+                resetPoints(serverPlayer, receivingPlayer);
                 serverPlayer.addSet();
+                score.unsetTieBreak();
             }
         }
 
-        if (serverPlayer.getGames() == 7 && !score.isTieBreak()) {
+        if (serverPlayer.getGames() >= 6 && (serverPlayer.getGames() - receivingPlayer.getGames()) >= 2 && !score.isTieBreak()) {
             serverPlayer.addSet();
-            serverPlayer.resetGame();
+            resetGames(serverPlayer, receivingPlayer);
         } else {
             if (serverPlayer.getGames() == 6 && receivingPlayer.getGames() == 6 && !score.isTieBreak()) {
                 score.setTieBreak();
@@ -50,5 +51,15 @@ public class MatchScoreCalculationService {
                 return player.getPoints() > enemy.getPoints();
             }
         } return false;
+    }
+
+    private void resetPoints(PlayerScore serverPlayer, PlayerScore receivingPLayer) {
+        serverPlayer.resetPoints();
+        receivingPLayer.resetPoints();
+    }
+
+    private void resetGames(PlayerScore serverPlayer, PlayerScore receivingPLayer) {
+        serverPlayer.resetGames();
+        receivingPLayer.resetGames();
     }
 }
