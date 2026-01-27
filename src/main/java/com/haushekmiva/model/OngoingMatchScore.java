@@ -43,7 +43,11 @@ public class OngoingMatchScore {
     }
 
     public void setTieBreak() {
-        this.isTieBreak = !this.isTieBreak;
+        this.isTieBreak = true;
+    }
+
+    public void unsetTieBreak() {
+        this.isTieBreak = false;
     }
 
     public boolean isTieBreak() {

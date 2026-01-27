@@ -45,15 +45,15 @@ public class PlayerScore {
         this.point += 1;
     }
 
-    public void resetPoint() {
+    public void resetPoints() {
         this.point = 0;
     }
 
-    public void resetGame() {
+    public void resetGames() {
         this.game = 0;
     }
 
-    public void resetSet() {
+    public void resetSets() {
         this.set = 0;
     }
 }
