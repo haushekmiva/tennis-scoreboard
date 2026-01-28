@@ -53,7 +53,4 @@ public class PlayerScore {
         this.game = 0;
     }
 
-    public void resetSets() {
-        this.set = 0;
-    }
 }

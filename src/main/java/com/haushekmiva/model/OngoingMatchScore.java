@@ -24,6 +24,14 @@ public class OngoingMatchScore {
 
     }
 
+    public PlayerScore getFirstPlayerScore() {
+        return firstPlayerScore;
+    }
+
+    public PlayerScore getSecondPlayerScore() {
+        return secondPlayerScore;
+    }
+
     public PlayerScore getPlayerScore(int playerId) {
         return playerScores.get(playerId);
     }

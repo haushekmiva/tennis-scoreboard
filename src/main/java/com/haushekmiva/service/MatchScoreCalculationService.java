@@ -2,6 +2,7 @@ package com.haushekmiva.service;
 
 import com.haushekmiva.model.OngoingMatchScore;
 import com.haushekmiva.model.PlayerScore;
+import com.haushekmiva.model.SetScore;
 
 
 public class MatchScoreCalculationService {
@@ -23,14 +24,18 @@ public class MatchScoreCalculationService {
             }
         } else {
             if (serverPlayer.getPoints() == 7) {
-                resetPoints(serverPlayer, receivingPlayer);
                 serverPlayer.addSet();
+                score.addSetScore(new SetScore(score.getFirstPlayerScore().getPoints(),
+                        score.getSecondPlayerScore().getPoints()));
+                resetPoints(serverPlayer, receivingPlayer);
                 score.unsetTieBreak();
             }
         }
 
         if (serverPlayer.getGames() >= 6 && (serverPlayer.getGames() - receivingPlayer.getGames()) >= 2 && !score.isTieBreak()) {
             serverPlayer.addSet();
+            score.addSetScore(new SetScore(score.getFirstPlayerScore().getGames(), score.getSecondPlayerScore().getGames()));
+
             resetGames(serverPlayer, receivingPlayer);
         } else {
             if (serverPlayer.getGames() == 6 && receivingPlayer.getGames() == 6 && !score.isTieBreak()) {
