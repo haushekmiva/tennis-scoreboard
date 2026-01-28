@@ -2,69 +2,55 @@ package com.haushekmiva.service;
 
 import com.haushekmiva.model.OngoingMatchScore;
 import com.haushekmiva.model.PlayerScore;
-import com.haushekmiva.model.SetScore;
 
 
 public class MatchScoreCalculationService {
 
     public boolean doMove(OngoingMatchScore score, int playerId) {
-        PlayerScore serverPlayer = score.getPlayerScore(playerId);
-        PlayerScore receivingPlayer = score.getPlayerEnemyScore(playerId);
+        int enemyPlayerId = score.getPlayerEnemyId(playerId);
 
-        serverPlayer.addPoint();
-        if (!score.isTieBreak() && serverPlayer.getPoints() >= 4) {
-            if (receivingPlayer.getPoints() < 3) {
-                resetPoints(serverPlayer, receivingPlayer);
-                serverPlayer.addGame();
+        score.addPoint(playerId);
+        if (!score.isTieBreak() && score.getPlayerPoints(playerId) >= 4) {
+            if (score.getPlayerPoints(enemyPlayerId) < 3) {
+                score.resetPoints();
+                score.addGame(playerId);
             } else {
-                if ((serverPlayer.getPoints() - receivingPlayer.getPoints() == 2)) {
-                    resetPoints(serverPlayer, receivingPlayer);
-                    serverPlayer.addGame();
+                if ((score.getPlayerPoints(playerId) - score.getPlayerPoints(enemyPlayerId) == 2)) {
+                    score.resetPoints();
+                    score.addGame(playerId);
                 }
             }
         } else {
-            if (serverPlayer.getPoints() == 7) {
-                serverPlayer.addSet();
-                score.addSetScore(new SetScore(score.getFirstPlayerScore().getPoints(),
-                        score.getSecondPlayerScore().getPoints()));
-                resetPoints(serverPlayer, receivingPlayer);
+            if (score.getPlayerPoints(playerId) == 7) {
+                score.addSet(playerId);
+                score.saveSetHistory();
+                score.resetPoints();
                 score.unsetTieBreak();
             }
         }
 
-        if (serverPlayer.getGames() >= 6 && (serverPlayer.getGames() - receivingPlayer.getGames()) >= 2 && !score.isTieBreak()) {
-            serverPlayer.addSet();
-            score.addSetScore(new SetScore(score.getFirstPlayerScore().getGames(), score.getSecondPlayerScore().getGames()));
+        if (score.getPlayerGames(playerId) >= 6 && (score.getPlayerGames(playerId) - score.getPlayerGames(enemyPlayerId)) >= 2
+                && !score.isTieBreak()) {
+            score.addSet(playerId);
+            score.saveSetHistory();
 
-            resetGames(serverPlayer, receivingPlayer);
+            score.resetGames();
         } else {
-            if (serverPlayer.getGames() == 6 && receivingPlayer.getGames() == 6 && !score.isTieBreak()) {
+            if (score.getPlayerGames(playerId) == 6 && score.getPlayerGames(enemyPlayerId) == 6 && !score.isTieBreak()) {
                 score.setTieBreak();
             }
         }
 
-        return serverPlayer.getSets() == 2;
+        return score.getPlayerSets(playerId) == 2;
 
     }
 
-    public boolean haveAdvantage(OngoingMatchScore score, int playerId) {
+    public boolean haveAdvantage(OngoingMatchScore score, int playerId, int enemyPlayerId) {
 
         if (!score.isTieBreak()) {
-            PlayerScore player = score.getPlayerScore(playerId);
-            PlayerScore enemy = score.getPlayerEnemyScore(playerId);
-            if (player.getPoints() >= 3 && enemy.getPoints() >= 3) {
-                return player.getPoints() > enemy.getPoints();
+            if (score.getPlayerPoints(playerId) >= 3 && score.getPlayerPoints(enemyPlayerId) >= 3) {
+                return score.getPlayerPoints(playerId) > score.getPlayerPoints(enemyPlayerId);
             }
         } return false;
-    }
-
-    private void resetPoints(PlayerScore serverPlayer, PlayerScore receivingPLayer) {
-        serverPlayer.resetPoints();
-        receivingPLayer.resetPoints();
-    }
-
-    private void resetGames(PlayerScore serverPlayer, PlayerScore receivingPLayer) {
-        serverPlayer.resetGames();
-        receivingPLayer.resetGames();
     }
 }

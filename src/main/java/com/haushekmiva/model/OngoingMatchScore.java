@@ -24,26 +24,48 @@ public class OngoingMatchScore {
 
     }
 
-    public PlayerScore getFirstPlayerScore() {
-        return firstPlayerScore;
+    public void addPoint(int playerId) {
+        playerScores.get(playerId).addPoint();
     }
 
-    public PlayerScore getSecondPlayerScore() {
-        return secondPlayerScore;
+    public void addGame(int playerId) {
+        playerScores.get(playerId).addGame();
     }
 
-    public PlayerScore getPlayerScore(int playerId) {
-        return playerScores.get(playerId);
+    public void addSet(int playerId) {
+        playerScores.get(playerId).addSet();
     }
 
-    public PlayerScore getPlayerEnemyScore(int playerId) {
+    public int getPlayerPoints(int playerId) {
+        return playerScores.get(playerId).getPoints();
+    }
+
+    public int getPlayerGames(int playerId) {
+        return playerScores.get(playerId).getGames();
+    }
+
+    public int getPlayerSets(int playerId) {
+        return playerScores.get(playerId).getSets();
+    }
+
+    public void resetPoints() {
+        firstPlayerScore.resetPoints();
+        secondPlayerScore.resetPoints();
+    }
+
+    public void resetGames() {
+        firstPlayerScore.resetGames();
+        secondPlayerScore.resetGames();
+    }
+
+    public int getPlayerEnemyId(int playerId) {
         if (firstPlayerScore.getPlayerId() == playerId) {
-            return secondPlayerScore;
-        } else return firstPlayerScore;
+            return secondPlayerScore.getPlayerId();
+        } else return firstPlayerScore.getPlayerId();
     }
 
-    public void addSetScore(SetScore setScore) {
-        setScores.add(setScore);
+    public void saveSetHistory() {
+        setScores.add(new SetScore(firstPlayerScore.getGames(), secondPlayerScore.getGames()));
     }
 
     public ArrayList<SetScore> getSetScores() {
