@@ -25,7 +25,7 @@ public class MatchScoreCalculatingServiceTest {
 
     @Test
     void shouldIncreaseGamesForPlayerAfterFourMoves() {
-        int MOVES_REQUIRED_TO_WIN_ONE_GAME = 24;
+        int MOVES_REQUIRED_TO_WIN_ONE_GAME = 4;
 
         OngoingMatchScore score = new OngoingMatchScore(1, "Artyom",
                 2, "Judith");
@@ -101,6 +101,17 @@ public class MatchScoreCalculatingServiceTest {
 
         makePlayerMove(score, 1, 7);
         assertEquals(1, score.getPlayerSets(1));
+    }
+
+    @Test
+    void shouldPlayerWinWhenWinsTwoSets() {
+        OngoingMatchScore score = new OngoingMatchScore(1, "Artyom",
+                2, "Judith");
+
+        makePlayerWinGame(score, 1, 6);
+        makePlayerWinGame(score, 1, 6);
+
+        assertTrue(score.isMatchFinished());
     }
 
 
