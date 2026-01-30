@@ -37,7 +37,7 @@ public class MatchScoreCalculatingServiceTest {
 
     @Test
     void shouldIncreaseSetForPlayerAfterSixGames() {
-        int MOVES_REQUIRED_TO_WIN_ONE_SET = 24;
+        int MOVES_REQUIRED_TO_WIN_ONE_SET = 4 * 6;
 
         OngoingMatchScore score = new OngoingMatchScore(1, "Artyom",
                 2, "Judith");
@@ -116,22 +116,36 @@ public class MatchScoreCalculatingServiceTest {
 
 
 
-    private boolean makePlayerMove(OngoingMatchScore score, int playerId, int times) {
+    private void makePlayerMove(OngoingMatchScore score, int playerId, int times) {
         for (int i = 0; i < times; i++) {
-            if (calculationService.doMove(score, playerId)) {
-                return true;
-            }
-        } return false;
+            calculationService.doMove(score, playerId);
+        }
     }
 
-    private boolean makePlayerWinGame(OngoingMatchScore score, int playerId, int times) {
-        for (int i = 0; i < times; i++) {
-            for (int j = 0; j < 4; j++) {
-                if (calculationService.doMove(score, playerId)) {
-                    return true;
-                }
+    private void makePlayerWinGame(OngoingMatchScore score, int playerId, int times) {
+        int countTimes = 0;
+
+        int countGameLast = score.getPlayerGames(playerId);
+        int countSetLast = score.getPlayerSets(playerId);
+
+        while(countTimes != times) {
+            if (score.isTieBreak()) {
+                throw new IllegalStateException("Данная функция не может быть вызвана во время тай-брейка.");
             }
-        } return false;
+            calculationService.doMove(score, playerId);
+            if (score.getPlayerGames(playerId) != countGameLast && score.getPlayerGames(playerId) != 0) {
+                countTimes += 1;
+            }
+
+            if (score.getPlayerSets(playerId) != countSetLast && score.getPlayerGames(playerId) == 0) {
+                countTimes += 1;
+            }
+
+            countGameLast = score.getPlayerGames(playerId);
+            countSetLast = score.getPlayerSets(playerId);
+
+        }
+        calculationService.doMove(score, playerId);
     }
 
 }
