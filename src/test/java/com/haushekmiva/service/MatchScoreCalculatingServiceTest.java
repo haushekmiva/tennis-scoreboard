@@ -117,8 +117,30 @@ public class MatchScoreCalculatingServiceTest {
         assertTrue(score.isMatchFinished(), "Игрок должен победить при выигрыше в двух сетах.");
     }
 
+    @Test
+    void shouldPointsBeResetWhenPlayerWinGame() {
+        OngoingMatchScore score = new OngoingMatchScore(1, "Artyom",
+                2, "Judith");
 
+        makePlayerMove(score, 1, 2);
+        makePlayerMove(score, 2 , 3);
+        makePlayerWinGame(score, 1, 1);
 
+        assertEquals(0, score.getPlayerPoints(1), "Очки игрока 1 должны быть сброшены после выигрыша гейма.");
+        assertEquals(0, score.getPlayerPoints(2), "Очки игрока 2 должны быть сброшены после выигрыша гейма.");
+    }
+
+    @Test
+    void shouldGamesBeResetWhenPlayerWinSet() {
+        OngoingMatchScore score = new OngoingMatchScore(1, "Artyom",
+                2, "Judith");
+
+        makePlayerWinGame(score, 1, 3);
+        makePlayerWinGame(score, 2, 6);
+
+        assertEquals(0, score.getPlayerGames(1), "Геймы игрока 1 должны быть сброшены после выигрыша сета.");
+        assertEquals(0, score.getPlayerGames(2), "Геймы игрока 2 должны быть сброшены после выигрыша сета.");
+    }
 
     private void makePlayerMove(OngoingMatchScore score, int playerId, int times) {
         for (int i = 0; i < times; i++) {
