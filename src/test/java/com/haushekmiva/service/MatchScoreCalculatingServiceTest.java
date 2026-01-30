@@ -48,6 +48,18 @@ public class MatchScoreCalculatingServiceTest {
     }
 
     @Test
+    void shouldPlayerWinSetWithScoreSevenFive() {
+        OngoingMatchScore score = new OngoingMatchScore(1, "Artyom",
+                2, "Judith");
+
+        makePlayerWinGame(score, 1, 5);
+        makePlayerWinGame(score, 2, 5);
+        makePlayerWinGame(score, 1, 2);
+
+        assertEquals(1, score.getPlayerSets(1), "Игрок 1 должен выиграть 1 сет после победы в 7 геймах.");
+    }
+
+    @Test
     void shouldNotWinGameWhenPlayerGetsOnePointWhenBothHaveThreePoints() {
         OngoingMatchScore score = new OngoingMatchScore(1, "Artyom",
                 2, "Judith");
@@ -74,7 +86,6 @@ public class MatchScoreCalculatingServiceTest {
         assertEquals(1, score.getPlayerGames(1), "Игрок 1 должен выиграть после получения одного очка, " +
                 "находясь в преимуществе.");
     }
-
 
     @Test
     void shouldBeTieBreakWhenScoreOfGamesOfBothPlayersIsSix() {
@@ -112,10 +123,12 @@ public class MatchScoreCalculatingServiceTest {
                 2, "Judith");
 
         makePlayerWinGame(score, 1, 6);
+        makePlayerWinGame(score, 2  , 6);
         makePlayerWinGame(score, 1, 6);
 
         assertTrue(score.isMatchFinished(), "Игрок должен победить при выигрыше в двух сетах.");
     }
+
 
     @Test
     void shouldPointsBeResetWhenPlayerWinGame() {
