@@ -11,6 +11,10 @@ public class MatchScoreCalculatingServiceTest {
 
     private final MatchScoreCalculationService calculationService = new MatchScoreCalculationService();
 
+    int MOVES_REQUIRED_TO_WIN_ONE_GAME = 4;
+    int MOVES_REQUIRED_TO_WIN_ONE_SET = 4 * 6;
+
+
     @Test
     void shouldIncreasePointsForBothPlayersAfterEachMove() {
         OngoingMatchScore score = new OngoingMatchScore(1, "Artyom",
@@ -19,32 +23,28 @@ public class MatchScoreCalculatingServiceTest {
         calculationService.doMove(score, 1);
         calculationService.doMove(score, 2);
 
-        assertEquals(1, score.getPlayerPoints(1));
-        assertEquals(1, score.getPlayerPoints(2));
+        assertEquals(1, score.getPlayerPoints(1), "Игрок 1 должен иметь 1 очко после подачи.");
+        assertEquals(1, score.getPlayerPoints(2), "Игрок 2 должен иметь 1 очко после подачи.");
     }
 
     @Test
     void shouldIncreaseGamesForPlayerAfterFourMoves() {
-        int MOVES_REQUIRED_TO_WIN_ONE_GAME = 4;
-
         OngoingMatchScore score = new OngoingMatchScore(1, "Artyom",
                 2, "Judith");
 
         makePlayerMove(score, 1, MOVES_REQUIRED_TO_WIN_ONE_GAME);
 
-        assertEquals(1, score.getPlayerGames(1));
+        assertEquals(1, score.getPlayerGames(1), "Игрок 1 должен иметь 1 гейм после выигрыша 40+ очков.");
     }
 
     @Test
     void shouldIncreaseSetForPlayerAfterSixGames() {
-        int MOVES_REQUIRED_TO_WIN_ONE_SET = 4 * 6;
-
         OngoingMatchScore score = new OngoingMatchScore(1, "Artyom",
                 2, "Judith");
 
         makePlayerMove(score, 1, MOVES_REQUIRED_TO_WIN_ONE_SET);
 
-        assertEquals(1, score.getPlayerSets(1));
+        assertEquals(1, score.getPlayerSets(1), "Игрок 1 должен выиграть 1 сет после победы в 6 геймах.");
     }
 
     @Test
@@ -57,7 +57,8 @@ public class MatchScoreCalculatingServiceTest {
 
         makePlayerMove(score, 1, 1);
 
-        assertEquals(0, score.getPlayerGames(1));
+        assertEquals(0, score.getPlayerGames(1), "Игрок 1 не должен выиграть при превышении 40 очков," +
+                "если его противник уже имеет 40 очков.");
     }
 
     @Test
@@ -70,7 +71,8 @@ public class MatchScoreCalculatingServiceTest {
 
         makePlayerMove(score, 1, 2);
 
-        assertEquals(1, score.getPlayerGames(1));
+        assertEquals(1, score.getPlayerGames(1), "Игрок 1 должен выиграть после получения одного очка, " +
+                "находясь в преимуществе.");
     }
 
 
@@ -85,7 +87,7 @@ public class MatchScoreCalculatingServiceTest {
         makePlayerWinGame(score, 1, 1);
         makePlayerWinGame(score, 2, 1);
 
-        assertTrue(score.isTieBreak());
+        assertTrue(score.isTieBreak(), "При счете 6:6 должен начаться тай-брейк.");
     }
 
     @Test
@@ -100,7 +102,8 @@ public class MatchScoreCalculatingServiceTest {
         makePlayerWinGame(score, 2, 1);
 
         makePlayerMove(score, 1, 7);
-        assertEquals(1, score.getPlayerSets(1));
+        assertEquals(1, score.getPlayerSets(1), "Игрок 1 должен выиграть сет после получения 7 очков" +
+                "в тай-брейке.");
     }
 
     @Test
@@ -111,8 +114,9 @@ public class MatchScoreCalculatingServiceTest {
         makePlayerWinGame(score, 1, 6);
         makePlayerWinGame(score, 1, 6);
 
-        assertTrue(score.isMatchFinished());
+        assertTrue(score.isMatchFinished(), "Игрок должен победить при выигрыше в двух сетах.");
     }
+
 
 
 
@@ -145,7 +149,6 @@ public class MatchScoreCalculatingServiceTest {
             countSetLast = score.getPlayerSets(playerId);
 
         }
-        calculationService.doMove(score, playerId);
     }
 
 }
