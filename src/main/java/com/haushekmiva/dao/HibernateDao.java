@@ -17,18 +17,20 @@ public abstract class HibernateDao<T, ID extends Serializable> {
         this.sessionFactory = sessionFactory;
     }
 
-    public void save(T entity) {
+    public Long save(T entity) {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            session.persist(entity); // если нужно будет айди потом то поменяю
+            Long id = (Long) session.save(entity);
             transaction.commit();
+            return id;
         } catch (Exception e) { // TODO: сузить исключения и создать более конкретные
             if (transaction != null) {
                 transaction.rollback();
                 throw new DataAccessException(e);
             }
         }
+        return 0L; // подумай хорошая ли практика
     }
 
     public T findById(ID id) {
