@@ -27,10 +27,9 @@ public abstract class HibernateDao<T, ID extends Serializable> {
         } catch (Exception e) { // TODO: сузить исключения и создать более конкретные
             if (transaction != null) {
                 transaction.rollback();
-                throw new DataAccessException(e);
             }
+            throw new DataAccessException("Ошибка при сохранении сущности", e);
         }
-        return 0L; // подумай хорошая ли практика
     }
 
     public T findById(ID id) {
