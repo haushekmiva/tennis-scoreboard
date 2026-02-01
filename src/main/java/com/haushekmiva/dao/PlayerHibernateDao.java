@@ -19,8 +19,8 @@ public class PlayerHibernateDao extends HibernateDao<Player, Long>{
         try (Session session = super.getSessionFactory().openSession()) {
 
             Query<Player> query = session.createQuery(
-                    "FROM players p WHERE p.name = :name", Player.class);
-            query.setParameter("email", "example@mail.com");
+                    "FROM Player p WHERE p.name = :name", Player.class);
+            query.setParameter("name", name);
             List<Player> players = query.list();
 
             if (players.isEmpty()) {
