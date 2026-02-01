@@ -172,8 +172,8 @@
 
         <!-- Регистрация классов-сущностей -->
         <!-- Укажи все свои @Entity классы -->
-        <mapping class="com.haushekmiva.Player"/>
-        <mapping class="com.haushekmiva.Match"/>
+        <mapping class="com.haushekmiva.model.Player"/>
+        <mapping class="com.haushekmiva.model.Match"/>
         <!-- Добавляй свои классы здесь -->
 
     </session-factory>
