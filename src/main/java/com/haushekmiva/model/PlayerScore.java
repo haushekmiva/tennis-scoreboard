@@ -2,18 +2,18 @@ package com.haushekmiva.model;
 
 public class PlayerScore {
 
-    private final int playerId;
+    private final Long playerId;
     private final String  playerName;
     private int point = 0;
     private int game = 0;
     private int set = 0;
 
-    public PlayerScore(int playerId, String playerName) {
+    public PlayerScore(Long playerId, String playerName) {
         this.playerId = playerId;
         this.playerName = playerName;
     }
 
-    public int getPlayerId() {
+    public Long getPlayerId() {
         return playerId;
     }
 

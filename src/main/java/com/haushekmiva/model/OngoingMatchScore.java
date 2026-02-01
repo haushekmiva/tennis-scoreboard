@@ -3,12 +3,13 @@ package com.haushekmiva.model;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class OngoingMatchScore {
 
     private final PlayerScore firstPlayerScore;
     private final PlayerScore secondPlayerScore;
-    private final Map<Integer, PlayerScore> playerScores = new HashMap<>();
+    private final Map<Long, PlayerScore> playerScores = new HashMap<>();
 
     private final ArrayList<SetScore> setScores = new ArrayList<SetScore>();
 
@@ -16,7 +17,7 @@ public class OngoingMatchScore {
 
     private boolean isMatchFinished = false;
 
-    public OngoingMatchScore(int firstPlayerId, String firstPlayerName, int secondPlayerId, String secondPlayerName) {
+    public OngoingMatchScore(Long firstPlayerId, String firstPlayerName, Long secondPlayerId, String secondPlayerName) {
 
         this.firstPlayerScore = new PlayerScore(firstPlayerId, firstPlayerName);
         this.secondPlayerScore = new PlayerScore(secondPlayerId, secondPlayerName);
@@ -26,27 +27,27 @@ public class OngoingMatchScore {
 
     }
 
-    public void addPoint(int playerId) {
+    public void addPoint(Long playerId) {
         playerScores.get(playerId).addPoint();
     }
 
-    public void addGame(int playerId) {
+    public void addGame(Long playerId) {
         playerScores.get(playerId).addGame();
     }
 
-    public void addSet(int playerId) {
+    public void addSet(Long playerId) {
         playerScores.get(playerId).addSet();
     }
 
-    public int getPlayerPoints(int playerId) {
+    public int getPlayerPoints(Long playerId) {
         return playerScores.get(playerId).getPoints();
     }
 
-    public int getPlayerGames(int playerId) {
+    public int getPlayerGames(Long playerId) {
         return playerScores.get(playerId).getGames();
     }
 
-    public int getPlayerSets(int playerId) {
+    public int getPlayerSets(Long playerId) {
         return playerScores.get(playerId).getSets();
     }
 
@@ -68,8 +69,8 @@ public class OngoingMatchScore {
         secondPlayerScore.resetGames();
     }
 
-    public int getPlayerEnemyId(int playerId) {
-        if (firstPlayerScore.getPlayerId() == playerId) {
+    public Long getPlayerEnemyId(Long playerId) {
+        if (Objects.equals(firstPlayerScore.getPlayerId(), playerId)) {
             return secondPlayerScore.getPlayerId();
         } else return firstPlayerScore.getPlayerId();
     }

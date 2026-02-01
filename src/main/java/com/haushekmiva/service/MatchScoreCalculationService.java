@@ -5,8 +5,8 @@ import com.haushekmiva.model.OngoingMatchScore;
 
 public class MatchScoreCalculationService {
 
-    public boolean doMove(OngoingMatchScore score, int playerId) {
-        int enemyPlayerId = score.getPlayerEnemyId(playerId);
+    public boolean doMove(OngoingMatchScore score, Long playerId) {
+        Long enemyPlayerId = score.getPlayerEnemyId(playerId);
 
         score.addPoint(playerId);
         if (!score.isTieBreak() && score.getPlayerPoints(playerId) >= 4) {
@@ -46,7 +46,7 @@ public class MatchScoreCalculationService {
 
     }
 
-    public boolean haveAdvantage(OngoingMatchScore score, int playerId, int enemyPlayerId) {
+    public boolean haveAdvantage(OngoingMatchScore score, Long playerId, Long enemyPlayerId) {
 
         if (!score.isTieBreak()) {
             if (score.getPlayerPoints(playerId) >= 3 && score.getPlayerPoints(enemyPlayerId) >= 3) {
