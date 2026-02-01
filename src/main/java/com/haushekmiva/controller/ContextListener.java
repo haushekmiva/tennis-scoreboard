@@ -4,6 +4,7 @@ import com.haushekmiva.dao.HibernateDao;
 import com.haushekmiva.dao.PlayerHibernateDao;
 import com.haushekmiva.model.Player;
 import com.haushekmiva.service.OngoingMatchesService;
+import com.haushekmiva.service.PlayerCheckService;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
 
@@ -27,6 +28,9 @@ public class ContextListener implements ServletContextListener {
 
         OngoingMatchesService ongoingMatchesService = new OngoingMatchesService();
         context.setAttribute("ongoingMatchesService", ongoingMatchesService);
+
+        PlayerCheckService playerCheckService = new PlayerCheckService(sessionFactory);
+        context.setAttribute("playerCheckService", playerCheckService);
 
         System.out.println("Application started.");
     }
