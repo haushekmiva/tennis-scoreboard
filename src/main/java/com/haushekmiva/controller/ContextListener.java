@@ -1,8 +1,5 @@
 package com.haushekmiva.controller;
 
-import com.haushekmiva.dao.HibernateDao;
-import com.haushekmiva.dao.PlayerHibernateDao;
-import com.haushekmiva.model.Player;
 import com.haushekmiva.service.OngoingMatchesService;
 import com.haushekmiva.service.PlayerCheckService;
 import jakarta.servlet.ServletContext;
@@ -19,20 +16,20 @@ public class ContextListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        ServletContext context = sce.getServletContext();
+            ServletContext context = sce.getServletContext();
 
-        Configuration configuration = new Configuration();
-        configuration.configure("hibernate.cfg.xml");
-        SessionFactory sessionFactory = configuration.buildSessionFactory();
-        context.setAttribute("sessionFactory", sessionFactory);
+            Configuration configuration = new Configuration();
+            configuration.configure("hibernate.cfg.xml");
+            SessionFactory sessionFactory = configuration.buildSessionFactory();
+            context.setAttribute("sessionFactory", sessionFactory);
 
-        OngoingMatchesService ongoingMatchesService = new OngoingMatchesService();
-        context.setAttribute("ongoingMatchesService", ongoingMatchesService);
+            OngoingMatchesService ongoingMatchesService = new OngoingMatchesService();
+            context.setAttribute("ongoingMatchesService", ongoingMatchesService);
 
-        PlayerCheckService playerCheckService = new PlayerCheckService(sessionFactory);
-        context.setAttribute("playerCheckService", playerCheckService);
+            PlayerCheckService playerCheckService = new PlayerCheckService(sessionFactory);
+            context.setAttribute("playerCheckService", playerCheckService);
 
-        System.out.println("Application started.");
+            System.out.println("Application started.");
     }
 
 }
