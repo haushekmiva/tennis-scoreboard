@@ -35,7 +35,12 @@
             <div class="new-match-image"></div>
             <div class="form-container center">
                 <form method="post" action="<c:url value="/new-match"/>">
-                    <p style="color: red;">Sample error message</p>
+
+                    <c:if test="${not empty errorMessage}">
+                        <p style="color: red;">Error: ${errorMessage}</p>
+                    </c:if>
+
+
                     <label class="label-player" for="firstPlayerName">Player one</label>
                     <input id="firstPlayerName" name="firstPlayerName" class="input-player" placeholder="Name" type="text" required title="Enter a name">
                     <label class="label-player" for="secondPlayerName">Player two</label>

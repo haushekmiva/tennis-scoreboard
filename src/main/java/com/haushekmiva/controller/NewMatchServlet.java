@@ -1,13 +1,10 @@
 package com.haushekmiva.controller;
 
-import com.haushekmiva.dao.HibernateDao;
-import com.haushekmiva.dao.PlayerHibernateDao;
 import com.haushekmiva.dto.MatchInformation;
 import com.haushekmiva.dto.MatchParticipantIds;
-import com.haushekmiva.model.OngoingMatchScore;
-import com.haushekmiva.model.Player;
 import com.haushekmiva.service.OngoingMatchesService;
 import com.haushekmiva.service.PlayerCheckService;
+import com.haushekmiva.validation.ValidationErrorMessages;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
@@ -15,11 +12,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.hibernate.SessionFactory;
+
 
 import java.io.IOException;
 import java.util.Optional;
 import java.util.UUID;
+
+import static com.haushekmiva.validation.FieldValidation.checkFieldEmpty;
+import static com.haushekmiva.validation.ObjectLevelValidation.checkFieldsEqual;
 
 @WebServlet("/new-match")
 public class NewMatchServlet extends HttpServlet {
@@ -33,15 +33,33 @@ public class NewMatchServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
         ServletContext context = request.getServletContext();
         String firstPlayerName = request.getParameter("firstPlayerName");
         String secondPlayerName = request.getParameter("secondPlayerName");
 
-        // добавить валидацию
+        ValidationErrorMessages errorMessages = new ValidationErrorMessages();
 
-        // тут у нас PlayerCheckService
+        checkFieldEmpty(errorMessages, firstPlayerName, "Field player one cannot be empty.");
+        checkFieldEmpty(errorMessages, secondPlayerName, "Field player two cannot be empty.");
+
+        checkFieldsEqual(
+                        errorMessages,
+                        firstPlayerName,
+                        secondPlayerName,
+                        "Player names must be different."
+        );
+
+        if (errorMessages.hasErrors()) {
+            Optional<String> firstErrorMessage = errorMessages.getFirstErrorMessage();
+
+            firstErrorMessage.ifPresent(string -> request.setAttribute("errorMessage", string));
+
+            request.getRequestDispatcher("/WEB-INF/view/new-match.jsp").forward(request, response);
+            return;
+        }
+
         PlayerCheckService playerCheckService = (PlayerCheckService) context.getAttribute("playerCheckService");
         MatchParticipantIds matchParticipantIds = playerCheckService.getPlayerIds(firstPlayerName, secondPlayerName);
 
