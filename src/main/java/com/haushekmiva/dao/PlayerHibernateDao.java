@@ -2,6 +2,7 @@ package com.haushekmiva.dao;
 
 import com.haushekmiva.exceptions.DataAccessException;
 import com.haushekmiva.model.Player;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -26,7 +27,7 @@ public class PlayerHibernateDao extends HibernateDao<Player, Long>{
             if (players.isEmpty()) {
                 return Optional.empty();
             } else return Optional.of(players.get(0));
-        } catch (Exception e) {
+        } catch (HibernateException e) {
             throw new DataAccessException(e);
         }
     }

@@ -1,6 +1,7 @@
 package com.haushekmiva.dao;
 
 import com.haushekmiva.exceptions.DataAccessException;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -24,7 +25,7 @@ public abstract class HibernateDao<T, ID extends Serializable> {
             Long id = (Long) session.save(entity);
             transaction.commit();
             return id;
-        } catch (Exception e) { // TODO: сузить исключения и создать более конкретные
+        } catch (HibernateException e) { // TODO: сузить исключения и создать более конкретные
             if (transaction != null) {
                 transaction.rollback();
             }
@@ -35,7 +36,7 @@ public abstract class HibernateDao<T, ID extends Serializable> {
     public T findById(ID id) {
         try (Session session = sessionFactory.openSession()) {
             return session.get(entityClass, id);
-        } catch (Exception e) {
+        } catch (HibernateException e) {
             throw new DataAccessException(e);
         }
     }
