@@ -44,6 +44,37 @@ public class OngoingMatchScore {
         return PointDisplayState.NORMAL;
     }
 
+    public String getFirstPlayerName() {
+        return firstPlayerScore.getPlayerName();
+    }
+
+    public String getSecondPlayerName() {
+        return secondPlayerScore.getPlayerName();
+    }
+
+    public Long getFirstPlayerId() {
+        return firstPlayerScore.getPlayerId();
+    }
+
+    public Long getSecondPlayerId() {
+        return firstPlayerScore.getPlayerId();
+    }
+
+    public int getFirstPlayerGames() {
+        return firstPlayerScore.getGames();
+    }
+
+    public int getFirstPlayerSets() {
+        return firstPlayerScore.getSets();
+    }
+
+    public int getSecondPlayerGames() {
+        return secondPlayerScore.getGames();
+    }
+
+    public int getSecondPlayerSets() {
+        return secondPlayerScore.getSets();
+    }
 
     public void addPoint(Long playerId) {
         playerScores.get(playerId).addPoint();
