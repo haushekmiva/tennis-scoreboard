@@ -14,8 +14,8 @@ public class OngoingMatchScore {
     private final ArrayList<SetScore> setScores = new ArrayList<SetScore>();
 
     private boolean isTieBreak = false;
-
     private boolean isMatchFinished = false;
+
 
     public OngoingMatchScore(Long firstPlayerId, String firstPlayerName, Long secondPlayerId, String secondPlayerName) {
 
@@ -26,6 +26,24 @@ public class OngoingMatchScore {
         playerScores.put(secondPlayerId, secondPlayerScore);
 
     }
+
+    public PointDisplayState getPointDisplayState() {
+        int p1 = firstPlayerScore.getPoints();
+        int p2 = secondPlayerScore.getPoints();
+
+        if (isTieBreak) {
+            return PointDisplayState.NORMAL;
+        }
+
+        if (p1 >= 3 && p2 >= 3) {
+            if (p1 == p2) return PointDisplayState.DEUCE;
+            if (p1 > p2) return PointDisplayState.ADVANTAGE_FIRST;
+            return PointDisplayState.ADVANTAGE_SECOND;
+        }
+
+        return PointDisplayState.NORMAL;
+    }
+
 
     public void addPoint(Long playerId) {
         playerScores.get(playerId).addPoint();
