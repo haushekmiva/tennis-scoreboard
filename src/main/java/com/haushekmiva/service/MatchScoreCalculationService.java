@@ -45,13 +45,4 @@ public class MatchScoreCalculationService {
         return score.isMatchFinished();
 
     }
-
-    public boolean haveAdvantage(OngoingMatchScore score, Long playerId, Long enemyPlayerId) {
-
-        if (!score.isTieBreak()) {
-            if (score.getPlayerPoints(playerId) >= 3 && score.getPlayerPoints(enemyPlayerId) >= 3) {
-                return score.getPlayerPoints(playerId) > score.getPlayerPoints(enemyPlayerId);
-            }
-        } return false;
-    }
 }
