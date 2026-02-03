@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.util.Optional;
 import java.util.UUID;
 
-import static com.haushekmiva.validation.FieldValidation.checkFieldEmpty;
+import static com.haushekmiva.validation.InputValidation.checkFieldEmpty;
 import static com.haushekmiva.validation.ObjectLevelValidation.checkFieldsEqual;
 
 @WebServlet("/new-match")
