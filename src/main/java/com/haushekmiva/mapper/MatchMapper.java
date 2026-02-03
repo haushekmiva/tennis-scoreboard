@@ -34,6 +34,8 @@ public interface MatchMapper {
     }
 
     private String getPlayerPoints(OngoingMatchScore score, PlayerNumbers playerNumber) {
+        String ADVANTAGE_SYMBOL = "AD";
+        int POINT_COUNT_TO_GET_FORTY = 3;
         String[] values = {"0", "15", "30", "40"};
         PointDisplayState pointDisplayState = score.getPointDisplayState();
 
@@ -45,8 +47,8 @@ public interface MatchMapper {
         return switch (pointDisplayState) {
             case NORMAL -> values[score.getPlayerPoints(playerId)];
             case DEUCE -> values[3];
-            case ADVANTAGE_FIRST -> (playerNumber == PlayerNumbers.FIRST) ? "AD" : values[3];
-            case ADVANTAGE_SECOND -> (playerNumber == PlayerNumbers.SECOND) ? "AD" : values[3];
+            case ADVANTAGE_FIRST -> (playerNumber == PlayerNumbers.FIRST) ? ADVANTAGE_SYMBOL : values[POINT_COUNT_TO_GET_FORTY];
+            case ADVANTAGE_SECOND -> (playerNumber == PlayerNumbers.SECOND) ? ADVANTAGE_SYMBOL : values[POINT_COUNT_TO_GET_FORTY];
         };
     }
 }
