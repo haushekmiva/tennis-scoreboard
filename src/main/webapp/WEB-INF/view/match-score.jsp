@@ -46,21 +46,27 @@
                 </thead>
                 <tbody>
                 <tr class="player1">
-                    <td class="table-text">Rafael Nadal</td>
-                    <td class="table-text">2</td>
-                    <td class="table-text">4</td>
-                    <td class="table-text">40</td>
+                    <td class="table-text">${ongoingMatchScoreDto.firstPlayerName}</td>
+                    <td class="table-text">${ongoingMatchScoreDto.firstPlayerSets}</td>
+                    <td class="table-text">${ongoingMatchScoreDto.firstPlayerGames}</td>
+                    <td class="table-text">${ongoingMatchScoreDto.firstPlayerPoints}</td>
                     <td class="table-text">
-                        <div class="score-btn">Score</div>
+                        <form method="post" action="">
+                            <input type="hidden" name="firstPlayerId" value="${ongoingMatchScoreDto.firstPlayerId}" />
+                            <button type="submit" class="score-btn">Score</button>
+                        </form>
                     </td>
                 </tr>
                 <tr class="player2">
-                    <td class="table-text">Roger Federer</td>
-                    <td class="table-text">2</td>
-                    <td class="table-text">3</td>
-                    <td class="table-text">15</td>
+                    <td class="table-text">${ongoingMatchScoreDto.secondPlayerName}</td>
+                    <td class="table-text">${ongoingMatchScoreDto.secondPlayerSets}</td>
+                    <td class="table-text">${ongoingMatchScoreDto.secondPlayerGames}</td>
+                    <td class="table-text">${ongoingMatchScoreDto.secondPlayerPoints}</td>
                     <td class="table-text">
-                        <div class="score-btn">Score</div>
+                        <form method="post" action="">
+                            <input type="hidden" name="secondPlayerId" value="${ongoingMatchScoreDto.secondPlayerId}" />
+                            <button type="submit" class="score-btn">Score</button>
+                        </form>
                     </td>
                 </tr>
                 </tbody>
