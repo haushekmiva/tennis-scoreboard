@@ -51,6 +51,7 @@ public interface MatchMapper {
             case DEUCE -> values[3];
             case ADVANTAGE_FIRST -> (playerNumber == PlayerNumbers.FIRST) ? ADVANTAGE_SYMBOL : values[POINT_COUNT_TO_GET_FORTY];
             case ADVANTAGE_SECOND -> (playerNumber == PlayerNumbers.SECOND) ? ADVANTAGE_SYMBOL : values[POINT_COUNT_TO_GET_FORTY];
+            case TIE_BREAK -> String.valueOf(score.getPlayerPoints(playerId));
         };
     }
 }

@@ -4,5 +4,6 @@ public enum PointDisplayState {
     NORMAL,
     DEUCE,
     ADVANTAGE_FIRST,
-    ADVANTAGE_SECOND
+    ADVANTAGE_SECOND,
+    TIE_BREAK
 }
