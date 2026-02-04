@@ -1,5 +1,6 @@
 package com.haushekmiva.controller;
 
+import com.haushekmiva.service.MatchScoreCalculationService;
 import com.haushekmiva.service.OngoingMatchesService;
 import com.haushekmiva.service.PlayerCheckService;
 import jakarta.servlet.ServletContext;
@@ -28,6 +29,9 @@ public class ContextListener implements ServletContextListener {
 
             PlayerCheckService playerCheckService = new PlayerCheckService(sessionFactory);
             context.setAttribute("playerCheckService", playerCheckService);
+
+        MatchScoreCalculationService matchScoreCalculationService = new MatchScoreCalculationService();
+        context.setAttribute("matchScoreCalculationService", matchScoreCalculationService);
 
             System.out.println("Application started.");
     }
