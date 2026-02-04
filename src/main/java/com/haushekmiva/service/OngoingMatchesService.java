@@ -36,7 +36,7 @@ public class OngoingMatchesService {
         return matchUUID;
     }
 
-    public void deleteMatch(UUID matchId, OngoingMatchScore match) {
-        matches.remove(matchId, match);
+    public void removeMatch(UUID matchId) {
+        matches.remove(matchId);
     }
 }
