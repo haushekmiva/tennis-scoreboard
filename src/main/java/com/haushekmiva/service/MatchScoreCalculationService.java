@@ -5,7 +5,7 @@ import com.haushekmiva.model.OngoingMatchScore;
 
 public class MatchScoreCalculationService {
 
-    public boolean doMove(OngoingMatchScore score, Long playerId) {
+    public void doMove(OngoingMatchScore score, Long playerId) {
         Long enemyPlayerId = score.getPlayerEnemyId(playerId);
 
         score.addPoint(playerId);
@@ -43,7 +43,5 @@ public class MatchScoreCalculationService {
         if (score.getPlayerSets(playerId) == 2) {
             score.setMatchFinished();
         }
-        return score.isMatchFinished();
-
     }
 }
