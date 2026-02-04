@@ -32,7 +32,7 @@ public class OngoingMatchScore {
         int p2 = secondPlayerScore.getPoints();
 
         if (isTieBreak) {
-            return PointDisplayState.NORMAL;
+            return PointDisplayState.TIE_BREAK;
         }
 
         if (p1 >= 3 && p2 >= 3) {
