@@ -57,7 +57,7 @@ public class OngoingMatchScore {
     }
 
     public Long getSecondPlayerId() {
-        return firstPlayerScore.getPlayerId();
+        return secondPlayerScore.getPlayerId();
     }
 
     public int getFirstPlayerGames() {
