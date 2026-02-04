@@ -52,7 +52,7 @@
                     <td class="table-text">${ongoingMatchScoreDto.firstPlayerPoints}</td>
                     <td class="table-text">
                         <form method="post" action="">
-                            <input type="hidden" name="firstPlayerId" value="${ongoingMatchScoreDto.firstPlayerId}" />
+                            <input type="hidden" name="playerId" value="${ongoingMatchScoreDto.firstPlayerId}" />
                             <button type="submit" class="score-btn">Score</button>
                         </form>
                     </td>
@@ -64,7 +64,7 @@
                     <td class="table-text">${ongoingMatchScoreDto.secondPlayerPoints}</td>
                     <td class="table-text">
                         <form method="post" action="">
-                            <input type="hidden" name="secondPlayerId" value="${ongoingMatchScoreDto.secondPlayerId}" />
+                            <input type="hidden" name="playerId" value="${ongoingMatchScoreDto.secondPlayerId}" />
                             <button type="submit" class="score-btn">Score</button>
                         </form>
                     </td>
