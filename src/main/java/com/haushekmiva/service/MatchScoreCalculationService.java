@@ -24,6 +24,7 @@ public class MatchScoreCalculationService {
                 score.addSet(playerId);
                 score.saveSetHistory();
                 score.resetPoints();
+                score.resetGames();
                 score.unsetTieBreak();
             }
         }
