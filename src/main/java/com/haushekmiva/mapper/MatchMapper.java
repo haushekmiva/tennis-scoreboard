@@ -14,14 +14,16 @@ public interface MatchMapper {
     MatchMapper INSTANCE = Mappers.getMapper(MatchMapper.class);
 
     // подумай о том что делает геттеры
-    @Mapping(target = "firstPlayerName", expression = "java(score.getFirstPlayerName())")
+    @Mapping(target = "firstPlayerName", expression = "java(ongoingMatchScore.getFirstPlayerName())")
+    @Mapping(target = "firstPlayerId", expression = "java(String.valueOf(ongoingMatchScore.getFirstPlayerId()))")
     @Mapping(source = ".", target = "firstPlayerPoints", qualifiedByName = "getFirstPlayerPoints")
-    @Mapping(target = "firstPlayerGames", expression = "java(String.valueOf(score.getFirstPlayerGames()))")
-    @Mapping(target = "firstPlayerSets", expression = "java(String.valueOf(score.getFirstPlayerSets()))")
-    @Mapping(target = "secondPlayerScore.playerName", expression = "java(score.getSecondPlayerName())")
+    @Mapping(target = "firstPlayerGames", expression = "java(String.valueOf(ongoingMatchScore.getFirstPlayerGames()))")
+    @Mapping(target = "firstPlayerSets", expression = "java(String.valueOf(ongoingMatchScore.getFirstPlayerSets()))")
+    @Mapping(target = "secondPlayerScore.playerName", expression = "java(ongoingMatchScore.getSecondPlayerName())")
+    @Mapping(target = "secondPlayerId", expression = "java(String.valueOf(ongoingMatchScore.getSecondPlayerId()))")
     @Mapping(source = ".", target = "secondPlayerPoints", qualifiedByName = "getSecondPlayerPoints")
-    @Mapping(target = "secondPlayerGames", expression = "java(String.valueOf(score.getSecondPlayerGames()))")
-    @Mapping(target = "secondPlayerSets", expression = "java(String.valueOf(score.getSecondPlayerSets()))")
+    @Mapping(target = "secondPlayerGames", expression = "java(String.valueOf(ongoingMatchScore.getSecondPlayerGames()))")
+    @Mapping(target = "secondPlayerSets", expression = "java(String.valueOf(ongoingMatchScore.getSecondPlayerSets()))")
     OngoingMatchScoreDto ongoingMatchScoreToDto(OngoingMatchScore ongoingMatchScore);
 
     @Named("getFirstPlayerPoints")
@@ -33,7 +35,7 @@ public interface MatchMapper {
         return getPlayerPoints(score, PlayerNumbers.SECOND);
     }
 
-    private String getPlayerPoints(OngoingMatchScore score, PlayerNumbers playerNumber) {
+    default String getPlayerPoints(OngoingMatchScore score, PlayerNumbers playerNumber) {
         String ADVANTAGE_SYMBOL = "AD";
         int POINT_COUNT_TO_GET_FORTY = 3;
         String[] values = {"0", "15", "30", "40"};
