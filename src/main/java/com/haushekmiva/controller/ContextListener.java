@@ -1,5 +1,6 @@
 package com.haushekmiva.controller;
 
+import com.haushekmiva.service.FinishedMatchesPersistenceService;
 import com.haushekmiva.service.MatchScoreCalculationService;
 import com.haushekmiva.service.OngoingMatchesService;
 import com.haushekmiva.service.PlayerCheckService;
@@ -17,23 +18,27 @@ public class ContextListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-            ServletContext context = sce.getServletContext();
+        ServletContext context = sce.getServletContext();
+        Configuration configuration = new Configuration();
+        configuration.configure("hibernate.cfg.xml");
 
-            Configuration configuration = new Configuration();
-            configuration.configure("hibernate.cfg.xml");
-            SessionFactory sessionFactory = configuration.buildSessionFactory();
-            context.setAttribute("sessionFactory", sessionFactory);
+        SessionFactory sessionFactory = configuration.buildSessionFactory();
+        context.setAttribute("sessionFactory", sessionFactory);
 
-            OngoingMatchesService ongoingMatchesService = new OngoingMatchesService();
-            context.setAttribute("ongoingMatchesService", ongoingMatchesService);
+        OngoingMatchesService ongoingMatchesService = new OngoingMatchesService();
+        context.setAttribute("ongoingMatchesService", ongoingMatchesService);
 
-            PlayerCheckService playerCheckService = new PlayerCheckService(sessionFactory);
-            context.setAttribute("playerCheckService", playerCheckService);
+        PlayerCheckService playerCheckService = new PlayerCheckService(sessionFactory);
+        context.setAttribute("playerCheckService", playerCheckService);
 
         MatchScoreCalculationService matchScoreCalculationService = new MatchScoreCalculationService();
         context.setAttribute("matchScoreCalculationService", matchScoreCalculationService);
 
-            System.out.println("Application started.");
+        FinishedMatchesPersistenceService finishedMatchesPersistenceService =
+                new FinishedMatchesPersistenceService(sessionFactory);
+        context.setAttribute("finishedMatchesPersistenceService", finishedMatchesPersistenceService);
+
+        System.out.println("Application started.");
     }
 
 }
