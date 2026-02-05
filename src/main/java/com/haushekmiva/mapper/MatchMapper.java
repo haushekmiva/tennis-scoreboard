@@ -19,7 +19,7 @@ public interface MatchMapper {
     @Mapping(source = ".", target = "firstPlayerPoints", qualifiedByName = "getFirstPlayerPoints")
     @Mapping(target = "firstPlayerGames", expression = "java(String.valueOf(ongoingMatchScore.getFirstPlayerGames()))")
     @Mapping(target = "firstPlayerSets", expression = "java(String.valueOf(ongoingMatchScore.getFirstPlayerSets()))")
-    @Mapping(target = "secondPlayerScore.playerName", expression = "java(ongoingMatchScore.getSecondPlayerName())")
+    @Mapping(target = "secondPlayerName", expression = "java(ongoingMatchScore.getSecondPlayerName())")
     @Mapping(target = "secondPlayerId", expression = "java(String.valueOf(ongoingMatchScore.getSecondPlayerId()))")
     @Mapping(source = ".", target = "secondPlayerPoints", qualifiedByName = "getSecondPlayerPoints")
     @Mapping(target = "secondPlayerGames", expression = "java(String.valueOf(ongoingMatchScore.getSecondPlayerGames()))")
@@ -30,6 +30,7 @@ public interface MatchMapper {
     default String getFirstPlayerPoints(OngoingMatchScore score) {
         return getPlayerPoints(score, PlayerNumbers.FIRST);
     }
+
     @Named("getSecondPlayerPoints")
     default String getSecondPlayerPoints(OngoingMatchScore score) {
         return getPlayerPoints(score, PlayerNumbers.SECOND);
