@@ -1,6 +1,6 @@
 package com.haushekmiva.mapper;
 
-enum PlayerNumbers {
+public enum PlayerNumbers {
     FIRST,
     SECOND
 }
