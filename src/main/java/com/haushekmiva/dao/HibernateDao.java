@@ -33,9 +33,17 @@ public abstract class HibernateDao<T, ID extends Serializable> {
         }
     }
 
-    public T findById(ID id) {
+    public T getById(ID id) {
         try (Session session = sessionFactory.openSession()) {
             return session.get(entityClass, id);
+        } catch (HibernateException e) {
+            throw new DataAccessException(e);
+        }
+    }
+
+    public T getReferenceById(ID id) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.getReference(entityClass, id);
         } catch (HibernateException e) {
             throw new DataAccessException(e);
         }
