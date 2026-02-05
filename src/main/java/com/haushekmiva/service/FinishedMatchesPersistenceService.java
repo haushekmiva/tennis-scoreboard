@@ -3,6 +3,7 @@ package com.haushekmiva.service;
 import com.haushekmiva.dao.MatchHibernateDao;
 import com.haushekmiva.dao.PlayerHibernateDao;
 import com.haushekmiva.model.Match;
+import com.haushekmiva.model.OngoingMatchScore;
 import com.haushekmiva.model.Player;
 import org.hibernate.SessionFactory;
 
@@ -18,18 +19,17 @@ public class FinishedMatchesPersistenceService {
         this.matchHibernateDao = new MatchHibernateDao(sessionFactory);
     }
 
-    public void finishedMatch(Long firstPlayerId, Long secondPlayerId, Long winnerId) {
+    public void saveFinishedMatch(OngoingMatchScore score) {
+        Long firstPlayerId = score.getFirstPlayerId();
+        Long secondPlayerId = score.getSecondPlayerId();
+        Long winnerId = score.getWinnerId();
+
         Player firstPlayer = playerHibernateDao.getReferenceById(firstPlayerId);
         Player secondPlayer = playerHibernateDao.getReferenceById(secondPlayerId);
-        Player winner;
-        if (Objects.equals(winnerId, firstPlayerId)) {
-            winner = firstPlayer;
-        } else {
-            winner = secondPlayer;
-        }
+        Player winner = Objects.equals(winnerId, firstPlayerId)
+                ? firstPlayer
+                : secondPlayer;
 
         matchHibernateDao.save(new Match(winner, secondPlayer, firstPlayer));
-
     }
-
 }

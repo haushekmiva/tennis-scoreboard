@@ -41,6 +41,7 @@ public class MatchScoreCalculationService {
         }
 
         if (score.getPlayerSets(playerId) == 2) {
+            score.setWinnerId(playerId);
             score.setMatchFinished();
         }
     }

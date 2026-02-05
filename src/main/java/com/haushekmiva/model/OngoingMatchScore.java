@@ -16,6 +16,7 @@ public class OngoingMatchScore {
     private boolean isTieBreak = false;
     private boolean isMatchFinished = false;
 
+    private Long winnerId;
 
     public OngoingMatchScore(Long firstPlayerId, String firstPlayerName, Long secondPlayerId, String secondPlayerName) {
 
@@ -42,6 +43,14 @@ public class OngoingMatchScore {
         }
 
         return PointDisplayState.NORMAL;
+    }
+
+    public Long getWinnerId() {
+        return winnerId;
+    }
+
+    public void setWinnerId(Long winnerId) {
+        this.winnerId = winnerId;
     }
 
     public String getFirstPlayerName() {
