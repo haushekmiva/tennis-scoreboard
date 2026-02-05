@@ -11,7 +11,7 @@ public class OngoingMatchScore {
     private final PlayerScore secondPlayerScore;
     private final Map<Long, PlayerScore> playerScores = new HashMap<>();
 
-    private final ArrayList<SetScore> setScores = new ArrayList<SetScore>();
+    private final ArrayList<SetScores> setScores = new ArrayList<SetScores>();
 
     private boolean isTieBreak = false;
     private boolean isMatchFinished = false;
@@ -134,12 +134,12 @@ public class OngoingMatchScore {
     }
 
     public void saveSetHistory() {
-        if (isTieBreak) {
-            setScores.add(new SetScore(firstPlayerScore.getGames(), secondPlayerScore.getGames()));
-        } else setScores.add(new SetScore(firstPlayerScore.getPoints(), secondPlayerScore.getPoints()));
+        if (!isTieBreak) {
+            setScores.add(new SetScores(firstPlayerScore.getGames(), secondPlayerScore.getGames()));
+        } else setScores.add(new SetScores(firstPlayerScore.getPoints(), secondPlayerScore.getPoints()));
     }
 
-    public ArrayList<SetScore> getSetScores() {
+    public ArrayList<SetScores> getSetScores() {
         return setScores;
     }
 
