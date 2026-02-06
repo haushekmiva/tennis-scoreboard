@@ -1,6 +1,6 @@
 package com.haushekmiva.validation;
 
-public class Checks {
+public final class Checks {
 
     private Checks() {}
 

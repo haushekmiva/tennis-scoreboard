@@ -69,8 +69,8 @@ public class MatchScoreServlet extends HttpServlet {
 
             forwardUser(request, response, "match-score.jsp");
         } else {
-            ongoingMatchesService.removeMatch(matchUuid);
             finishedMatchesPersistenceService.saveFinishedMatch(ongoingMatchScore);
+            ongoingMatchesService.removeMatch(matchUuid);
             FinishedMatchDto finishedMatchDto = FinishedMatchMapper.INSTANCE.ongoingMatchScoreToFinishedMatchDto(ongoingMatchScore);
             request.setAttribute("finishedMatchDto", finishedMatchDto);
 

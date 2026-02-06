@@ -2,7 +2,7 @@ package com.haushekmiva.validation;
 
 import java.util.*;
 
-public class ValidationErrorMessages {
+public final class ValidationErrorMessages {
 
     private final List<String> errorMessages = new ArrayList<>();
 

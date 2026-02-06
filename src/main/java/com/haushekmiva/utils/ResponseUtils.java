@@ -7,7 +7,9 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-public class ResponseUtils {
+public final class ResponseUtils {
+
+    private ResponseUtils() {}
 
     public static void forwardUser(HttpServletRequest request, HttpServletResponse response, String forwardPageName)
             throws ServletException, IOException {

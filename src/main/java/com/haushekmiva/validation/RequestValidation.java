@@ -3,7 +3,9 @@ package com.haushekmiva.validation;
 import com.haushekmiva.exceptions.MissingParameterException;
 
 
-public class RequestValidation {
+public final class RequestValidation {
+
+    private RequestValidation() {}
 
     public static void checkRequestParameterEmpty(String requestParameter, String parameterName) {
         if (Checks.isEmpty(requestParameter)) {

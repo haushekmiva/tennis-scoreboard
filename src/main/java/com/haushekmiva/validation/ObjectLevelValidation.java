@@ -1,6 +1,8 @@
 package com.haushekmiva.validation;
 
-public class ObjectLevelValidation {
+public final class ObjectLevelValidation {
+
+    private ObjectLevelValidation() {}
 
     public static void checkFieldsEqual(ValidationErrorMessages errorMessages,
                                         String firstFieldData,
