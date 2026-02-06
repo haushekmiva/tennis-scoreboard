@@ -2,12 +2,9 @@ package com.haushekmiva.controller;
 
 import com.haushekmiva.dto.MatchInformation;
 import com.haushekmiva.dto.MatchParticipantIds;
-import com.haushekmiva.service.FinishedMatchesPersistenceService;
-import com.haushekmiva.service.MatchScoreCalculationService;
 import com.haushekmiva.service.OngoingMatchesService;
 import com.haushekmiva.service.PlayerCheckService;
 import com.haushekmiva.validation.ValidationErrorMessages;
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

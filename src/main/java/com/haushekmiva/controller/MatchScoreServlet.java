@@ -9,8 +9,6 @@ import com.haushekmiva.model.OngoingMatchScore;
 import com.haushekmiva.service.FinishedMatchesPersistenceService;
 import com.haushekmiva.service.MatchScoreCalculationService;
 import com.haushekmiva.service.OngoingMatchesService;
-import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

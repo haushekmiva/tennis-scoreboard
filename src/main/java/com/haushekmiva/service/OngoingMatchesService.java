@@ -1,13 +1,10 @@
 package com.haushekmiva.service;
 
 import com.haushekmiva.dto.MatchInformation;
-import com.haushekmiva.dto.MatchParticipantIds;
 import com.haushekmiva.exceptions.ResourceNotFoundException;
 import com.haushekmiva.model.OngoingMatchScore;
 
-import java.nio.file.ReadOnlyFileSystemException;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 

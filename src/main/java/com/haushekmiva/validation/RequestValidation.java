@@ -2,7 +2,6 @@ package com.haushekmiva.validation;
 
 import com.haushekmiva.exceptions.MissingParameterException;
 
-import java.util.MissingResourceException;
 
 public class RequestValidation {
 
