@@ -68,8 +68,6 @@ public class MatchScoreServlet extends HttpServlet {
             FinishedMatchDto finishedMatchDto = FinishedMatchMapper.INSTANCE.ongoingMatchScoreToFinishedMatchDto(ongoingMatchScore);
             request.setAttribute("finishedMatchDto", finishedMatchDto);
 
-            response.setCharacterEncoding("UTF-8");
-            response.setContentType("text/html; charset=UTF-8");
             RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/finished-match-score.jsp");
             dispatcher.forward(request, response);
             return;
