@@ -37,12 +37,12 @@
         <p>Manage your tennis matches, record results, and track rankings</p>
         <div class="welcome-image"></div>
         <div class="form-container center">
-            <a class="homepage-action-button" href="#">
+            <a class="homepage-action-button" href="<c:url value='/new-match'/>">
                 <button class="btn start-match">
                     Start a new match
                 </button>
             </a>
-            <a class="homepage-action-button" href="#">
+            <a class="homepage-action-button" href="<c:url value='/matches'/>">
                 <button class="btn view-results">
                     View match results
                 </button>
