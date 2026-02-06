@@ -56,11 +56,13 @@ public class MatchScoreServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         UUID matchUuid = extractUuid(request);
-        Long playerId = Long.valueOf(request.getParameter("playerId")); // добавить валидацию
+        Long playerId = extractPlayerId(request);
+
         OngoingMatchScore ongoingMatchScore = ongoingMatchesService.getMatch(matchUuid);
 
         matchScoreCalculationService.doMove(ongoingMatchScore, playerId);
 
+        // как будто часть бизнес логики просочилась в сервлет
         if (!ongoingMatchScore.isMatchFinished()) {
             OngoingMatchScoreDto ongoingMatchScoreDto = MatchMapper.INSTANCE.ongoingMatchScoreToDto(ongoingMatchScore);
             request.setAttribute("ongoingMatchScoreDto", ongoingMatchScoreDto);
@@ -83,6 +85,15 @@ public class MatchScoreServlet extends HttpServlet {
             return UUID.fromString(matchUUIDRaw);
         } catch (IllegalArgumentException e) {
             throw new InvalidParameterValueException("Invalid UUID parameter format.");
+        }
+    }
+
+    private Long extractPlayerId(HttpServletRequest request) {
+        request.getParameter("playerId");
+        try {
+            return Long.valueOf(request.getParameter("playerId"));
+        } catch (NumberFormatException e) {
+            throw new InvalidParameterValueException("Invalid PlayerId parameter format.");
         }
     }
 
