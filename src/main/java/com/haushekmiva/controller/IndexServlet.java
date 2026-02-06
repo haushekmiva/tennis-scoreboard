@@ -9,13 +9,14 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+import static com.haushekmiva.utils.ResponseUtils.forwardUser;
+
 @WebServlet("")
 public class IndexServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/index.jsp");
-        dispatcher.forward(request, response);
+        forwardUser(request, response, "index.jsp");
     }
 
 }

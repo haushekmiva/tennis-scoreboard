@@ -2,6 +2,8 @@ package com.haushekmiva.controller;
 
 import com.haushekmiva.dto.MatchInformation;
 import com.haushekmiva.dto.MatchParticipantIds;
+import com.haushekmiva.service.FinishedMatchesPersistenceService;
+import com.haushekmiva.service.MatchScoreCalculationService;
 import com.haushekmiva.service.OngoingMatchesService;
 import com.haushekmiva.service.PlayerCheckService;
 import com.haushekmiva.validation.ValidationErrorMessages;
@@ -18,24 +20,35 @@ import java.io.IOException;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.haushekmiva.utils.ResponseUtils.forwardUser;
 import static com.haushekmiva.validation.InputValidation.checkFieldEmpty;
 import static com.haushekmiva.validation.ObjectLevelValidation.checkFieldsEqual;
 
 @WebServlet("/new-match")
 public class NewMatchServlet extends HttpServlet {
 
+    private OngoingMatchesService ongoingMatchesService;
+    private PlayerCheckService playerCheckService;
+
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        ServletContext context = getServletContext();
+        this.ongoingMatchesService = (OngoingMatchesService) context.getAttribute(
+                "ongoingMatchesService");
+        this.playerCheckService = (PlayerCheckService) context.getAttribute("playerCheckService");
+    }
+
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("text/html; charset=UTF-8");
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/new-match.jsp");
-        dispatcher.forward(request, response);
+        forwardUser(request, response, "new-match.jsp");
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException {
 
-        ServletContext context = request.getServletContext();
         String firstPlayerName = request.getParameter("firstPlayerName");
         String secondPlayerName = request.getParameter("secondPlayerName");
 
@@ -53,20 +66,16 @@ public class NewMatchServlet extends HttpServlet {
 
         if (errorMessages.hasErrors()) {
             Optional<String> firstErrorMessage = errorMessages.getFirstErrorMessage();
-
             firstErrorMessage.ifPresent(string -> request.setAttribute("errorMessage", string));
-
-            request.getRequestDispatcher("/WEB-INF/view/new-match.jsp").forward(request, response);
+            forwardUser(request, response, "new-match.jsp");
             return;
         }
 
-        PlayerCheckService playerCheckService = (PlayerCheckService) context.getAttribute("playerCheckService");
         MatchParticipantIds matchParticipantIds = playerCheckService.getPlayerIds(firstPlayerName, secondPlayerName);
 
         Long firstPlayerId = matchParticipantIds.firstPlayerId();
         Long secondPlayerId = matchParticipantIds.secondPlayerId();
 
-        OngoingMatchesService ongoingMatchesService = (OngoingMatchesService) context.getAttribute("ongoingMatchesService");
         UUID matchUUID = ongoingMatchesService.createNewMatch(
                 new MatchInformation(
                         firstPlayerId,
