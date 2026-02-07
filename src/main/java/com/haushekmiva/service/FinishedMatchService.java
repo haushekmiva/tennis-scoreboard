@@ -33,4 +33,9 @@ public class FinishedMatchService {
 
         matchHibernateDao.save(new Match(winner, secondPlayer, firstPlayer));
     }
+
+    public List<Match> getPaginatedMatches(int pageSize, int pageNumber) {
+        int offset = (pageNumber - 1) * pageSize;
+        return matchHibernateDao.fetchMatchesSubset(offset, pageSize);
+    }
 }
