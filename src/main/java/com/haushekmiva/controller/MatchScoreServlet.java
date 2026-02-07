@@ -6,7 +6,7 @@ import com.haushekmiva.exceptions.InvalidParameterValueException;
 import com.haushekmiva.mapper.FinishedMatchMapper;
 import com.haushekmiva.mapper.MatchMapper;
 import com.haushekmiva.model.OngoingMatchScore;
-import com.haushekmiva.service.FinishedMatchesPersistenceService;
+import com.haushekmiva.service.FinishedMatchService;
 import com.haushekmiva.service.MatchScoreCalculationService;
 import com.haushekmiva.service.OngoingMatchesService;
 import jakarta.servlet.ServletContext;
@@ -28,7 +28,7 @@ public class MatchScoreServlet extends HttpServlet {
 
     private OngoingMatchesService ongoingMatchesService;
     private MatchScoreCalculationService matchScoreCalculationService;
-    private FinishedMatchesPersistenceService finishedMatchesPersistenceService;
+    private FinishedMatchService finishedMatchService;
 
     @Override
     public void init() throws ServletException {
@@ -38,8 +38,8 @@ public class MatchScoreServlet extends HttpServlet {
                 "ongoingMatchesService");
         this.matchScoreCalculationService = (MatchScoreCalculationService) context.getAttribute(
                 "matchScoreCalculationService");
-        this.finishedMatchesPersistenceService =
-                (FinishedMatchesPersistenceService) context.getAttribute("finishedMatchesPersistenceService");
+        this.finishedMatchService =
+                (FinishedMatchService) context.getAttribute("finishedMatchService");
     }
 
     @Override
@@ -69,7 +69,7 @@ public class MatchScoreServlet extends HttpServlet {
 
             forwardUser(request, response, "match-score.jsp");
         } else {
-            finishedMatchesPersistenceService.saveFinishedMatch(ongoingMatchScore);
+            finishedMatchService.saveFinishedMatch(ongoingMatchScore);
             ongoingMatchesService.removeMatch(matchUuid);
             FinishedMatchDto finishedMatchDto = FinishedMatchMapper.INSTANCE.ongoingMatchScoreToFinishedMatchDto(ongoingMatchScore);
             request.setAttribute("finishedMatchDto", finishedMatchDto);

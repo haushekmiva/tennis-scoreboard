@@ -7,14 +7,15 @@ import com.haushekmiva.model.OngoingMatchScore;
 import com.haushekmiva.model.Player;
 import org.hibernate.SessionFactory;
 
+import java.util.List;
 import java.util.Objects;
 
-public class FinishedMatchesPersistenceService {
+public class FinishedMatchService {
 
     private final PlayerHibernateDao playerHibernateDao;
     private final MatchHibernateDao matchHibernateDao;
 
-    public FinishedMatchesPersistenceService(SessionFactory sessionFactory) {
+    public FinishedMatchService(SessionFactory sessionFactory) {
         this.playerHibernateDao = new PlayerHibernateDao(sessionFactory);
         this.matchHibernateDao = new MatchHibernateDao(sessionFactory);
     }
