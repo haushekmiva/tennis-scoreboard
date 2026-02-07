@@ -5,22 +5,31 @@ import com.haushekmiva.model.OngoingMatchScore;
 
 public class MatchScoreCalculationService {
 
+    private static final int POINTS_TO_WIN_GAME = 4;
+    private static final int DIFFERENCE_TO_WIN_IN_DEUCE = 2;
+    private static final int GAMES_TO_WIN_SET = 6;
+    private static final int DIFFERENCE_TO_WIN_SET = 2;
+    private static final int SETS_TO_WIN_GAME = 2;
+    private static final int GAMES_TO_HAVE_TIE_BREAK = 6;
+    private static final int POINTS_TO_WIN_IN_TIE_BREAK = 7;
+
+
     public void doMove(OngoingMatchScore score, Long playerId) {
         Long enemyPlayerId = score.getPlayerEnemyId(playerId);
 
         score.addPoint(playerId);
-        if (!score.isTieBreak() && score.getPlayerPoints(playerId) >= 4) {
-            if (score.getPlayerPoints(enemyPlayerId) < 3) {
+        if (!score.isTieBreak() && score.getPlayerPoints(playerId) >= POINTS_TO_WIN_GAME) {
+            if (score.getPlayerPoints(enemyPlayerId) < POINTS_TO_WIN_GAME - 1) {
                 score.resetPoints();
                 score.addGame(playerId);
             } else {
-                if ((score.getPlayerPoints(playerId) - score.getPlayerPoints(enemyPlayerId) == 2)) {
+                if ((score.getPlayerPoints(playerId) - score.getPlayerPoints(enemyPlayerId) == DIFFERENCE_TO_WIN_IN_DEUCE)) {
                     score.resetPoints();
                     score.addGame(playerId);
                 }
             }
         } else {
-            if (score.getPlayerPoints(playerId) == 7) {
+            if (score.getPlayerPoints(playerId) == POINTS_TO_WIN_IN_TIE_BREAK) {
                 score.addSet(playerId);
                 score.saveSetHistory();
                 score.resetPoints();
@@ -29,18 +38,21 @@ public class MatchScoreCalculationService {
             }
         }
 
-        if (score.getPlayerGames(playerId) >= 6 && (score.getPlayerGames(playerId) - score.getPlayerGames(enemyPlayerId)) >= 2
+        if (score.getPlayerGames(playerId) >= GAMES_TO_WIN_SET
+                && (score.getPlayerGames(playerId) - score.getPlayerGames(enemyPlayerId)) >= DIFFERENCE_TO_WIN_SET
                 && !score.isTieBreak()) {
             score.addSet(playerId);
             score.saveSetHistory();
             score.resetGames();
         } else {
-            if (score.getPlayerGames(playerId) == 6 && score.getPlayerGames(enemyPlayerId) == 6 && !score.isTieBreak()) {
+            if (score.getPlayerGames(playerId) == GAMES_TO_HAVE_TIE_BREAK
+                    && score.getPlayerGames(enemyPlayerId) == GAMES_TO_HAVE_TIE_BREAK
+                    && !score.isTieBreak()) {
                 score.setTieBreak();
             }
         }
 
-        if (score.getPlayerSets(playerId) == 2) {
+        if (score.getPlayerSets(playerId) == SETS_TO_WIN_GAME) {
             score.setWinnerId(playerId);
             score.setMatchFinished();
         }
