@@ -23,11 +23,11 @@ public class MatchHibernateDao extends HibernateDao<Match, Long> {
         }
     }
 
-    public List<Match> fetchMatchesSubset(int from, int to) {
+    public List<Match> fetchMatchesSubset(int offset, int count) {
         try (Session session = super.getSessionFactory().openSession()) {
             return session.createQuery("from Match", Match.class)
-                    .setFirstResult(from)
-                    .setMaxResults(to)
+                    .setFirstResult(offset)
+                    .setMaxResults(count)
                     .list();
         }
         catch (HibernateException e) {
