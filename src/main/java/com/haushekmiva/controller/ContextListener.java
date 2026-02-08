@@ -36,7 +36,7 @@ public class ContextListener implements ServletContextListener {
 
         FinishedMatchService finishedMatchService =
                 new FinishedMatchService(sessionFactory);
-        context.setAttribute("finishedMatchesPersistenceService", finishedMatchService);
+        context.setAttribute("finishedMatchService", finishedMatchService);
 
         System.out.println("Application started.");
     }
