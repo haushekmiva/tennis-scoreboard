@@ -38,4 +38,17 @@ public class FinishedMatchService {
         int offset = (pageNumber - 1) * pageSize;
         return matchHibernateDao.fetchMatchesSubset(offset, pageSize);
     }
+
+    public List<Match> getPaginatedMatchesByPlayerName(int pageSize, int pageNumber, String playerName) {
+        int offset = (pageNumber - 1) * pageSize;
+        return matchHibernateDao.fetchMatchesSubsetByPlayerName(offset, pageSize, playerName);
+    }
+
+    public int getFinishedMatchCount() {
+        return matchHibernateDao.getMatchCount().intValue();
+    }
+
+    public int getFinishedMatchCountByPlayer(String playerName) {
+        return matchHibernateDao.getMatchCountByPlayerName(playerName).intValue();
+    }
 }
