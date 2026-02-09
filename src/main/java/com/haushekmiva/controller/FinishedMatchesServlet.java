@@ -13,6 +13,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -96,7 +98,7 @@ public class FinishedMatchesServlet extends HttpServlet {
         Map<String, String> parameters = new HashMap<>();
         parameters.put("page", String.valueOf(redirectPageNumber));
         if (playerName != null && !playerName.isBlank()) {
-            parameters.put("filter_by_player_name", playerName);
+            parameters.put("filter_by_player_name", URLEncoder.encode(playerName, StandardCharsets.UTF_8));
         }
         redirectUser(response, "matches", parameters);
     }
