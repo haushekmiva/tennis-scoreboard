@@ -13,6 +13,7 @@ public final class ResponseUtils {
 
     public static void forwardUser(HttpServletRequest request, HttpServletResponse response, String forwardPageName)
             throws ServletException, IOException {
+        response.setContentType("text/html; charset=UTF-8");
         RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/" + forwardPageName);
         dispatcher.forward(request, response);
     }
