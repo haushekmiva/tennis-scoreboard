@@ -50,7 +50,8 @@ public class MatchHibernateDao extends HibernateDao<Match, Long> {
 
     public List<Match> fetchMatchesSubsetByPlayerName(int offset, int count, String playerName) {
         try (Session session = super.getSessionFactory().openSession()) {
-            return session.createQuery("from Match e where e.winner.name like :name", Match.class)
+            return session.createQuery("from Match e where e.firstPlayer.name like :name or e.secondPlayer.name like :name"
+                            , Match.class)
                     .setParameter("name", "%" + playerName + "%")
                     .setFirstResult(offset)
                     .setMaxResults(count)
