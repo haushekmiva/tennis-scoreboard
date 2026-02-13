@@ -9,16 +9,17 @@ import com.haushekmiva.model.Player;
 import java.util.List;
 import java.util.Objects;
 
-public class FinishedMatchService {
+public class DefaultFinishedMatchServiceService implements FinishedMatchPersistenceService {
 
     private final PlayerDao playerDao;
     private final MatchDao matchDao;
 
-    public FinishedMatchService(PlayerDao playerDao, MatchDao matchDao) {
+    public DefaultFinishedMatchServiceService(PlayerDao playerDao, MatchDao matchDao) {
         this.playerDao = playerDao;
         this.matchDao = matchDao;
     }
 
+    @Override
     public void saveFinishedMatch(OngoingMatchScore score) {
         Long firstPlayerId = score.getFirstPlayerId();
         Long secondPlayerId = score.getSecondPlayerId();
@@ -33,20 +34,24 @@ public class FinishedMatchService {
         matchDao.save(new Match(winner, secondPlayer, firstPlayer));
     }
 
+    @Override
     public List<Match> getPaginatedMatches(int pageSize, int pageNumber) {
         int offset = (pageNumber - 1) * pageSize;
         return matchDao.fetchMatchesSubset(offset, pageSize);
     }
 
+    @Override
     public List<Match> getPaginatedMatchesByPlayerName(int pageSize, int pageNumber, String playerName) {
         int offset = (pageNumber - 1) * pageSize;
         return matchDao.fetchMatchesSubsetByPlayerName(offset, pageSize, playerName);
     }
 
+    @Override
     public int getFinishedMatchCount() {
         return matchDao.getMatchCount().intValue();
     }
 
+    @Override
     public int getFinishedMatchCountByPlayer(String playerName) {
         return matchDao.getMatchCountByPlayerName(playerName).intValue();
     }

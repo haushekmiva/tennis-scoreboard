@@ -6,9 +6,8 @@ import com.haushekmiva.exceptions.InvalidParameterValueException;
 import com.haushekmiva.mapper.FinishedMatchMapper;
 import com.haushekmiva.mapper.MatchMapper;
 import com.haushekmiva.model.OngoingMatchScore;
-import com.haushekmiva.service.FinishedMatchService;
+import com.haushekmiva.service.FinishedMatchPersistenceService;
 import com.haushekmiva.service.MatchScoreCalculator;
-import com.haushekmiva.service.TennisMatchScoreCalculator;
 import com.haushekmiva.service.OngoingMatchRepository;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
@@ -29,7 +28,7 @@ public class MatchScoreServlet extends HttpServlet {
 
     private OngoingMatchRepository ongoingMatchRepository;
     private MatchScoreCalculator matchScoreCalculator;
-    private FinishedMatchService finishedMatchService;
+    private FinishedMatchPersistenceService finishedMatchPersistenceService;
 
     @Override
     public void init() throws ServletException {
@@ -39,8 +38,8 @@ public class MatchScoreServlet extends HttpServlet {
                 "ongoingMatchRepository");
         this.matchScoreCalculator = (MatchScoreCalculator) context.getAttribute(
                 "matchScoreCalculator");
-        this.finishedMatchService =
-                (FinishedMatchService) context.getAttribute("finishedMatchService");
+        this.finishedMatchPersistenceService =
+                (FinishedMatchPersistenceService) context.getAttribute("finishedMatchPersistenceService");
     }
 
     @Override
@@ -63,13 +62,16 @@ public class MatchScoreServlet extends HttpServlet {
 
         matchScoreCalculator.doMove(ongoingMatchScore, playerId);
 
+        // как будто часть бизнес логики просочилась в сервлет
+        // можно добавить класс-сервис который это будет дерижировать этим и все это в себе скроет
+        // мы просто вызываем метод process(score) и он уже там внутри все обьединяет
         if (!ongoingMatchScore.isMatchFinished()) {
             OngoingMatchScoreDto ongoingMatchScoreDto = MatchMapper.INSTANCE.ongoingMatchScoreToDto(ongoingMatchScore);
             request.setAttribute("ongoingMatchScoreDto", ongoingMatchScoreDto);
 
             forwardUser(request, response, "match-score.jsp");
         } else {
-            finishedMatchService.saveFinishedMatch(ongoingMatchScore);
+            finishedMatchPersistenceService.saveFinishedMatch(ongoingMatchScore);
             ongoingMatchRepository.removeMatch(matchUuid);
             FinishedMatchDto finishedMatchDto = FinishedMatchMapper.INSTANCE.ongoingMatchScoreToFinishedMatchDto(ongoingMatchScore);
             request.setAttribute("finishedMatchDto", finishedMatchDto);

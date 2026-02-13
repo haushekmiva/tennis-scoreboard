@@ -35,9 +35,9 @@ public class ContextListener implements ServletContextListener {
         PlayerCheckService playerCheckService = new DefaultPlayerCheckService(playerDao);
         context.setAttribute("playerCheckService", playerCheckService);
 
-        FinishedMatchService finishedMatchService =
-                new FinishedMatchService(playerDao, matchDao);
-        context.setAttribute("finishedMatchService", finishedMatchService);
+        FinishedMatchPersistenceService finishedMatchPersistenceService =
+                new DefaultFinishedMatchServiceService(playerDao, matchDao);
+        context.setAttribute("finishedMatchPersistenceService", finishedMatchPersistenceService);
 
         MatchScoreCalculator matchScoreCalculator = new TennisMatchScoreCalculator();
         context.setAttribute("matchScoreCalculator", matchScoreCalculator);
