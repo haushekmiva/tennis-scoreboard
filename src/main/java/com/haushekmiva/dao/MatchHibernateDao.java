@@ -7,16 +7,15 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import java.util.List;
-import java.util.Objects;
 
-import static org.hibernate.Hibernate.list;
 
-public class MatchHibernateDao extends HibernateDao<Match, Long> {
+public class MatchHibernateDao extends HibernateDao<Match, Long> implements MatchDao {
 
     public MatchHibernateDao(SessionFactory sessionFactory) {
         super(Match.class, sessionFactory);
     }
 
+    @Override
     public Long getMatchCount() {
         try (Session session = super.getSessionFactory().openSession()) {
             return session.createQuery("select count(e) from Match e", Long.class)
@@ -26,6 +25,7 @@ public class MatchHibernateDao extends HibernateDao<Match, Long> {
         }
     }
 
+    @Override
     public Long getMatchCountByPlayerName(String playerName) {
         try (Session session = super.getSessionFactory().openSession()) {
             return session.createQuery("select count(e) from Match e where e.winner.name like :name", Long.class)
@@ -36,6 +36,7 @@ public class MatchHibernateDao extends HibernateDao<Match, Long> {
         }
     }
 
+    @Override
     public List<Match> fetchMatchesSubset(int offset, int count) {
         try (Session session = super.getSessionFactory().openSession()) {
             return session.createQuery("from Match", Match.class)
@@ -48,6 +49,7 @@ public class MatchHibernateDao extends HibernateDao<Match, Long> {
         }
     }
 
+    @Override
     public List<Match> fetchMatchesSubsetByPlayerName(int offset, int count, String playerName) {
         try (Session session = super.getSessionFactory().openSession()) {
             return session.createQuery("from Match e where e.firstPlayer.name like :name or e.secondPlayer.name like :name"

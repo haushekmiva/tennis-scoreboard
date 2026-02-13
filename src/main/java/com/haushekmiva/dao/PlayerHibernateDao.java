@@ -10,7 +10,7 @@ import org.hibernate.query.Query;
 import java.util.List;
 import java.util.Optional;
 
-public class PlayerHibernateDao extends HibernateDao<Player, Long>{
+public class PlayerHibernateDao extends HibernateDao<Player, Long> implements PlayerDao {
 
     public PlayerHibernateDao(SessionFactory sessionFactory) {
         super(Player.class, sessionFactory);
