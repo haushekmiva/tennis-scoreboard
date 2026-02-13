@@ -4,10 +4,7 @@ import com.haushekmiva.dao.MatchDao;
 import com.haushekmiva.dao.MatchHibernateDao;
 import com.haushekmiva.dao.PlayerDao;
 import com.haushekmiva.dao.PlayerHibernateDao;
-import com.haushekmiva.service.FinishedMatchService;
-import com.haushekmiva.service.MatchScoreCalculationService;
-import com.haushekmiva.service.OngoingMatchesService;
-import com.haushekmiva.service.PlayerCheckService;
+import com.haushekmiva.service.*;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
 
@@ -29,8 +26,8 @@ public class ContextListener implements ServletContextListener {
         SessionFactory sessionFactory = configuration.buildSessionFactory();
         context.setAttribute("sessionFactory", sessionFactory);
 
-        OngoingMatchesService ongoingMatchesService = new OngoingMatchesService();
-        context.setAttribute("ongoingMatchesService", ongoingMatchesService);
+        OngoingMatchRepository ongoingMatchRepository = new InMemoryOngoingMatchRepository();
+        context.setAttribute("ongoingMatchRepository", ongoingMatchRepository);
 
         PlayerDao playerDao = new PlayerHibernateDao(sessionFactory);
         MatchDao matchDao = new MatchHibernateDao(sessionFactory);

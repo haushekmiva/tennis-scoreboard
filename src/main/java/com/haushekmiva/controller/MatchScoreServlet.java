@@ -8,7 +8,8 @@ import com.haushekmiva.mapper.MatchMapper;
 import com.haushekmiva.model.OngoingMatchScore;
 import com.haushekmiva.service.FinishedMatchService;
 import com.haushekmiva.service.MatchScoreCalculationService;
-import com.haushekmiva.service.OngoingMatchesService;
+import com.haushekmiva.service.InMemoryOngoingMatchRepository;
+import com.haushekmiva.service.OngoingMatchRepository;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -26,7 +27,7 @@ import static com.haushekmiva.validation.RequestValidation.checkRequestParameter
 @WebServlet("/match-score")
 public class MatchScoreServlet extends HttpServlet {
 
-    private OngoingMatchesService ongoingMatchesService;
+    private OngoingMatchRepository ongoingMatchRepository;
     private MatchScoreCalculationService matchScoreCalculationService;
     private FinishedMatchService finishedMatchService;
 
@@ -34,8 +35,8 @@ public class MatchScoreServlet extends HttpServlet {
     public void init() throws ServletException {
         super.init();
         ServletContext context = getServletContext();
-        this.ongoingMatchesService = (OngoingMatchesService) context.getAttribute(
-                "ongoingMatchesService");
+        this.ongoingMatchRepository = (OngoingMatchRepository) context.getAttribute(
+                "ongoingMatchRepository");
         this.matchScoreCalculationService = (MatchScoreCalculationService) context.getAttribute(
                 "matchScoreCalculationService");
         this.finishedMatchService =
@@ -45,7 +46,7 @@ public class MatchScoreServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         UUID matchUuid = extractUuid(request);
-        OngoingMatchScore ongoingMatchScore = ongoingMatchesService.getMatch(matchUuid);
+        OngoingMatchScore ongoingMatchScore = ongoingMatchRepository.getMatch(matchUuid);
 
         OngoingMatchScoreDto ongoingMatchScoreDto = MatchMapper.INSTANCE.ongoingMatchScoreToDto(ongoingMatchScore);
         request.setAttribute("ongoingMatchScoreDto", ongoingMatchScoreDto);
@@ -58,11 +59,10 @@ public class MatchScoreServlet extends HttpServlet {
         UUID matchUuid = extractUuid(request);
         Long playerId = extractPlayerId(request);
 
-        OngoingMatchScore ongoingMatchScore = ongoingMatchesService.getMatch(matchUuid);
+        OngoingMatchScore ongoingMatchScore = ongoingMatchRepository.getMatch(matchUuid);
 
         matchScoreCalculationService.doMove(ongoingMatchScore, playerId);
 
-        // как будто часть бизнес логики просочилась в сервлет
         if (!ongoingMatchScore.isMatchFinished()) {
             OngoingMatchScoreDto ongoingMatchScoreDto = MatchMapper.INSTANCE.ongoingMatchScoreToDto(ongoingMatchScore);
             request.setAttribute("ongoingMatchScoreDto", ongoingMatchScoreDto);
@@ -70,7 +70,7 @@ public class MatchScoreServlet extends HttpServlet {
             forwardUser(request, response, "match-score.jsp");
         } else {
             finishedMatchService.saveFinishedMatch(ongoingMatchScore);
-            ongoingMatchesService.removeMatch(matchUuid);
+            ongoingMatchRepository.removeMatch(matchUuid);
             FinishedMatchDto finishedMatchDto = FinishedMatchMapper.INSTANCE.ongoingMatchScoreToFinishedMatchDto(ongoingMatchScore);
             request.setAttribute("finishedMatchDto", finishedMatchDto);
 

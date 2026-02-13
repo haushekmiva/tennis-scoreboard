@@ -8,10 +8,11 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class OngoingMatchesService {
+public class InMemoryOngoingMatchRepository implements OngoingMatchRepository {
 
     private final Map<UUID, OngoingMatchScore> matches = new ConcurrentHashMap<>();
 
+    @Override
     public OngoingMatchScore getMatch(UUID matchId) {
         OngoingMatchScore match = matches.get(matchId);
         if (match != null) {
@@ -21,6 +22,7 @@ public class OngoingMatchesService {
         throw new ResourceNotFoundException(String.format("Match with UUID %s not found.", matchId));
     }
 
+    @Override
     public UUID createNewMatch(MatchInformation matchInformation) {
         UUID matchUUID = UUID.randomUUID();
         OngoingMatchScore match = new OngoingMatchScore(
@@ -33,6 +35,7 @@ public class OngoingMatchesService {
         return matchUUID;
     }
 
+    @Override
     public void removeMatch(UUID matchId) {
         matches.remove(matchId);
     }
