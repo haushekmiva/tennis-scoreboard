@@ -7,6 +7,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import java.io.Serializable;
+import java.util.Optional;
 
 public abstract class HibernateDao<T, ID extends Serializable> {
 
@@ -30,14 +31,6 @@ public abstract class HibernateDao<T, ID extends Serializable> {
                 transaction.rollback();
             }
             throw new DataAccessException("Ошибка при сохранении сущности", e);
-        }
-    }
-
-    public T getById(ID id) {
-        try (Session session = sessionFactory.openSession()) {
-            return session.get(entityClass, id);
-        } catch (HibernateException e) {
-            throw new DataAccessException(e);
         }
     }
 
