@@ -32,7 +32,7 @@ public class ContextListener implements ServletContextListener {
         PlayerDao playerDao = new PlayerHibernateDao(sessionFactory);
         MatchDao matchDao = new MatchHibernateDao(sessionFactory);
 
-        PlayerCheckService playerCheckService = new PlayerCheckService(playerDao);
+        PlayerCheckService playerCheckService = new DefaultPlayerCheckService(playerDao);
         context.setAttribute("playerCheckService", playerCheckService);
 
         FinishedMatchService finishedMatchService =

@@ -2,8 +2,8 @@ package com.haushekmiva.controller;
 
 import com.haushekmiva.dto.MatchInformation;
 import com.haushekmiva.dto.MatchParticipantIds;
-import com.haushekmiva.service.InMemoryOngoingMatchRepository;
 import com.haushekmiva.service.OngoingMatchRepository;
+import com.haushekmiva.service.DefaultPlayerCheckService;
 import com.haushekmiva.service.PlayerCheckService;
 import com.haushekmiva.validation.ValidationErrorMessages;
 import jakarta.servlet.ServletContext;
