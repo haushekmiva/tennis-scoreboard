@@ -1,5 +1,9 @@
 package com.haushekmiva.controller;
 
+import com.haushekmiva.dao.MatchDao;
+import com.haushekmiva.dao.MatchHibernateDao;
+import com.haushekmiva.dao.PlayerDao;
+import com.haushekmiva.dao.PlayerHibernateDao;
 import com.haushekmiva.service.FinishedMatchService;
 import com.haushekmiva.service.MatchScoreCalculationService;
 import com.haushekmiva.service.OngoingMatchesService;
@@ -28,15 +32,18 @@ public class ContextListener implements ServletContextListener {
         OngoingMatchesService ongoingMatchesService = new OngoingMatchesService();
         context.setAttribute("ongoingMatchesService", ongoingMatchesService);
 
-        PlayerCheckService playerCheckService = new PlayerCheckService(sessionFactory);
+        PlayerDao playerDao = new PlayerHibernateDao(sessionFactory);
+        MatchDao matchDao = new MatchHibernateDao(sessionFactory);
+
+        PlayerCheckService playerCheckService = new PlayerCheckService(playerDao);
         context.setAttribute("playerCheckService", playerCheckService);
+
+        FinishedMatchService finishedMatchService =
+                new FinishedMatchService(playerDao, matchDao);
+        context.setAttribute("finishedMatchService", finishedMatchService);
 
         MatchScoreCalculationService matchScoreCalculationService = new MatchScoreCalculationService();
         context.setAttribute("matchScoreCalculationService", matchScoreCalculationService);
-
-        FinishedMatchService finishedMatchService =
-                new FinishedMatchService(sessionFactory);
-        context.setAttribute("finishedMatchService", finishedMatchService);
 
         System.out.println("Application started.");
     }
