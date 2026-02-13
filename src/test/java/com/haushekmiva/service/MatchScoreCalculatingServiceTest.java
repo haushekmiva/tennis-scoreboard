@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MatchScoreCalculatingServiceTest {
 
-    private final MatchScoreCalculationService calculationService = new MatchScoreCalculationService();
+    private final TennisMatchScoreCalculator calculationService = new TennisMatchScoreCalculator();
 
     long MOVES_REQUIRED_TO_WIN_ONE_GAME = 4;
     long MOVES_REQUIRED_TO_WIN_ONE_SET = 4 * 6;

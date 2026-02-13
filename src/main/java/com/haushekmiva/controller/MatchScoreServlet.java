@@ -7,8 +7,8 @@ import com.haushekmiva.mapper.FinishedMatchMapper;
 import com.haushekmiva.mapper.MatchMapper;
 import com.haushekmiva.model.OngoingMatchScore;
 import com.haushekmiva.service.FinishedMatchService;
-import com.haushekmiva.service.MatchScoreCalculationService;
-import com.haushekmiva.service.InMemoryOngoingMatchRepository;
+import com.haushekmiva.service.MatchScoreCalculator;
+import com.haushekmiva.service.TennisMatchScoreCalculator;
 import com.haushekmiva.service.OngoingMatchRepository;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
@@ -28,7 +28,7 @@ import static com.haushekmiva.validation.RequestValidation.checkRequestParameter
 public class MatchScoreServlet extends HttpServlet {
 
     private OngoingMatchRepository ongoingMatchRepository;
-    private MatchScoreCalculationService matchScoreCalculationService;
+    private MatchScoreCalculator matchScoreCalculator;
     private FinishedMatchService finishedMatchService;
 
     @Override
@@ -37,8 +37,8 @@ public class MatchScoreServlet extends HttpServlet {
         ServletContext context = getServletContext();
         this.ongoingMatchRepository = (OngoingMatchRepository) context.getAttribute(
                 "ongoingMatchRepository");
-        this.matchScoreCalculationService = (MatchScoreCalculationService) context.getAttribute(
-                "matchScoreCalculationService");
+        this.matchScoreCalculator = (MatchScoreCalculator) context.getAttribute(
+                "matchScoreCalculator");
         this.finishedMatchService =
                 (FinishedMatchService) context.getAttribute("finishedMatchService");
     }
@@ -61,7 +61,7 @@ public class MatchScoreServlet extends HttpServlet {
 
         OngoingMatchScore ongoingMatchScore = ongoingMatchRepository.getMatch(matchUuid);
 
-        matchScoreCalculationService.doMove(ongoingMatchScore, playerId);
+        matchScoreCalculator.doMove(ongoingMatchScore, playerId);
 
         if (!ongoingMatchScore.isMatchFinished()) {
             OngoingMatchScoreDto ongoingMatchScoreDto = MatchMapper.INSTANCE.ongoingMatchScoreToDto(ongoingMatchScore);

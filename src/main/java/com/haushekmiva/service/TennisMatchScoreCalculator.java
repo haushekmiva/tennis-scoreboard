@@ -3,7 +3,7 @@ package com.haushekmiva.service;
 import com.haushekmiva.model.OngoingMatchScore;
 
 
-public class MatchScoreCalculationService {
+public class TennisMatchScoreCalculator implements MatchScoreCalculator {
 
     private static final int POINTS_TO_WIN_GAME = 4;
     private static final int DIFFERENCE_TO_WIN_IN_DEUCE = 2;
@@ -14,6 +14,7 @@ public class MatchScoreCalculationService {
     private static final int POINTS_TO_WIN_IN_TIE_BREAK = 7;
 
 
+    @Override
     public void doMove(OngoingMatchScore score, Long playerId) {
         Long enemyPlayerId = score.getPlayerEnemyId(playerId);
 
