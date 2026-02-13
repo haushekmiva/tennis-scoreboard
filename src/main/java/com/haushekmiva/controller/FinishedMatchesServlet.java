@@ -4,7 +4,8 @@ import com.haushekmiva.dto.FinishedMatchSearchDto;
 import com.haushekmiva.dto.factory.FinishedMatchSearchDtoFactory;
 import com.haushekmiva.exceptions.InvalidParameterValueException;
 import com.haushekmiva.model.Match;
-import com.haushekmiva.service.DefaultFinishedMatchServiceService;
+import com.haushekmiva.service.DefaultFinishedMatchService;
+import com.haushekmiva.service.FinishedMatchPersistenceService;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -28,14 +29,13 @@ public class FinishedMatchesServlet extends HttpServlet {
 
     public static final int DEFAULT_PAGE_NUMBER = 1;
     public static final int PAGE_SIZE = 5;
-    public static final int PAGE_NUMBER_LIMIT = Integer.MAX_VALUE;
-    private DefaultFinishedMatchServiceService defaultFinishedMatchService;
+    private FinishedMatchPersistenceService finishedMatchPersistenceService;
 
     @Override
     public void init() throws ServletException {
         super.init();
         ServletContext context = getServletContext();
-        this.defaultFinishedMatchService = (DefaultFinishedMatchServiceService) context.getAttribute(
+        this.finishedMatchPersistenceService = (FinishedMatchPersistenceService) context.getAttribute(
                 "finishedMatchService");
     }
 
@@ -54,11 +54,11 @@ public class FinishedMatchesServlet extends HttpServlet {
         int pageCount;
 
         if (playerName == null) {
-            matches = defaultFinishedMatchService.getPaginatedMatches(PAGE_SIZE, pageNumber);
-            pageCount = (defaultFinishedMatchService.getFinishedMatchCount() + PAGE_SIZE - 1) / PAGE_SIZE;
+            matches = finishedMatchPersistenceService.getPaginatedMatches(PAGE_SIZE, pageNumber);
+            pageCount = (finishedMatchPersistenceService.getFinishedMatchCount() + PAGE_SIZE - 1) / PAGE_SIZE;
         } else {
-            matches = defaultFinishedMatchService.getPaginatedMatchesByPlayerName(PAGE_SIZE, pageNumber, playerName);
-            pageCount = (defaultFinishedMatchService.getFinishedMatchCountByPlayer(playerName) + PAGE_SIZE - 1) / PAGE_SIZE;
+            matches = finishedMatchPersistenceService.getPaginatedMatchesByPlayerName(PAGE_SIZE, pageNumber, playerName);
+            pageCount = (finishedMatchPersistenceService.getFinishedMatchCountByPlayer(playerName) + PAGE_SIZE - 1) / PAGE_SIZE;
         }
 
         if (matches.isEmpty() && pageNumber != 1) {

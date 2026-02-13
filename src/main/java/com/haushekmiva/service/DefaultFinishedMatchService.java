@@ -9,12 +9,12 @@ import com.haushekmiva.model.Player;
 import java.util.List;
 import java.util.Objects;
 
-public class DefaultFinishedMatchServiceService implements FinishedMatchPersistenceService {
+public class DefaultFinishedMatchService implements FinishedMatchPersistenceService {
 
     private final PlayerDao playerDao;
     private final MatchDao matchDao;
 
-    public DefaultFinishedMatchServiceService(PlayerDao playerDao, MatchDao matchDao) {
+    public DefaultFinishedMatchService(PlayerDao playerDao, MatchDao matchDao) {
         this.playerDao = playerDao;
         this.matchDao = matchDao;
     }
