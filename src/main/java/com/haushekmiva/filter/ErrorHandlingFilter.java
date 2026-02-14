@@ -22,14 +22,6 @@ public class ErrorHandlingFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         try {
             chain.doFilter(request, response);
-            if (response.getStatus() == 404) {
-                forwardUserToErrorPage(
-                        request,
-                        response,
-                        new ErrorDto(HttpServletResponse.SC_NOT_FOUND,
-                                "The page that you search not exist.")
-                );
-            }
         } catch (InvalidParameterValueException | MissingParameterException e) {
             forwardUserToErrorPage(
                     request,
