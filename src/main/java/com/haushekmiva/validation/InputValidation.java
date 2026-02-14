@@ -11,6 +11,10 @@ public final class InputValidation {
         }
     }
 
-
+    public static void checkInputLength(ValidationErrorMessages validationErrorMessages, String inputData, int maxSize, String errorMessage) {
+        if (inputData.length() > maxSize) {
+            validationErrorMessages.addErrorMessage(errorMessage);
+        }
+    }
 
 }

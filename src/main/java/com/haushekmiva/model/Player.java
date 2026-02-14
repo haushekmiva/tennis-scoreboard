@@ -14,7 +14,7 @@ public class Player {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false, unique = true)
+    @Column(name = "name", length = 16, nullable = false, unique = true)
     private String name;
 
     @OneToMany(mappedBy = "firstPlayer", fetch = FetchType.LAZY)

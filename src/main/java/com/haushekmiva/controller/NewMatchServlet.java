@@ -19,6 +19,7 @@ import java.util.UUID;
 
 import static com.haushekmiva.utils.ResponseUtils.forwardUser;
 import static com.haushekmiva.validation.InputValidation.checkFieldEmpty;
+import static com.haushekmiva.validation.InputValidation.checkInputLength;
 import static com.haushekmiva.validation.ObjectLevelValidation.checkFieldsEqual;
 
 @WebServlet("/new-match")
@@ -53,6 +54,8 @@ public class NewMatchServlet extends HttpServlet {
 
         checkFieldEmpty(errorMessages, firstPlayerName, "Field player one cannot be empty.");
         checkFieldEmpty(errorMessages, secondPlayerName, "Field player two cannot be empty.");
+        checkInputLength(errorMessages, firstPlayerName, 16, "Player name must be 16 characters or fewer.");
+        checkInputLength(errorMessages, secondPlayerName, 16, "Player name must be 16 characters or fewer.");
 
         checkFieldsEqual(
                         errorMessages,
