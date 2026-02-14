@@ -3,8 +3,7 @@ package com.haushekmiva.controller;
 import com.haushekmiva.dto.MatchInformation;
 import com.haushekmiva.dto.MatchParticipantIds;
 import com.haushekmiva.service.OngoingMatchRepository;
-import com.haushekmiva.service.DefaultPlayerCheckService;
-import com.haushekmiva.service.PlayerCheckService;
+import com.haushekmiva.service.PlayerResolver;
 import com.haushekmiva.validation.ValidationErrorMessages;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
@@ -26,7 +25,7 @@ import static com.haushekmiva.validation.ObjectLevelValidation.checkFieldsEqual;
 public class NewMatchServlet extends HttpServlet {
 
     private OngoingMatchRepository ongoingMatchRepository;
-    private PlayerCheckService playerCheckService;
+    private PlayerResolver playerResolver;
 
     @Override
     public void init() throws ServletException {
@@ -34,7 +33,7 @@ public class NewMatchServlet extends HttpServlet {
         ServletContext context = getServletContext();
         this.ongoingMatchRepository = (OngoingMatchRepository) context.getAttribute(
                 "ongoingMatchRepository");
-        this.playerCheckService = (PlayerCheckService) context.getAttribute("playerCheckService");
+        this.playerResolver = (PlayerResolver) context.getAttribute("playerResolver");
     }
 
 
@@ -69,7 +68,7 @@ public class NewMatchServlet extends HttpServlet {
             return;
         }
 
-        MatchParticipantIds matchParticipantIds = playerCheckService.getPlayerIds(firstPlayerName, secondPlayerName);
+        MatchParticipantIds matchParticipantIds = playerResolver.getPlayerIds(firstPlayerName, secondPlayerName);
 
         Long firstPlayerId = matchParticipantIds.firstPlayerId();
         Long secondPlayerId = matchParticipantIds.secondPlayerId();

@@ -32,14 +32,14 @@ public class ContextListener implements ServletContextListener {
         PlayerDao playerDao = new PlayerHibernateDao(sessionFactory);
         MatchDao matchDao = new MatchHibernateDao(sessionFactory);
 
-        PlayerCheckService playerCheckService = new DefaultPlayerCheckService(playerDao);
-        context.setAttribute("playerCheckService", playerCheckService);
+        PlayerResolver playerResolver = new PlayerResolverImpl(playerDao);
+        context.setAttribute("playerResolver", playerResolver);
 
-        FinishedMatchPersistenceService finishedMatchPersistenceService =
-                new DefaultFinishedMatchService(playerDao, matchDao);
-        context.setAttribute("finishedMatchPersistenceService", finishedMatchPersistenceService);
+        FinishedMatchPersistence finishedMatchPersistence =
+                new FinishedMatchPersistenceImpl(playerDao, matchDao);
+        context.setAttribute("finishedMatchPersistence", finishedMatchPersistence);
 
-        MatchScoreCalculator matchScoreCalculator = new DefaultMatchScoreCalculator();
+        MatchScoreCalculator matchScoreCalculator = new MatchScoreCalculatorImpl();
         context.setAttribute("matchScoreCalculator", matchScoreCalculator);
 
         System.out.println("Application started.");

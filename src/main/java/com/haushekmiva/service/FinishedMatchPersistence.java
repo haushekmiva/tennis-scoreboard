@@ -5,7 +5,7 @@ import com.haushekmiva.model.OngoingMatchScore;
 
 import java.util.List;
 
-public interface FinishedMatchPersistenceService {
+public interface FinishedMatchPersistence {
     void saveFinishedMatch(OngoingMatchScore score);
 
     List<Match> getPaginatedMatches(int pageSize, int pageNumber);

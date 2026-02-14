@@ -6,11 +6,11 @@ import com.haushekmiva.model.Player;
 
 import java.util.Optional;
 
-public class DefaultPlayerCheckService implements PlayerCheckService {
+public class PlayerResolverImpl implements PlayerResolver {
 
     private final PlayerDao playerDao;
 
-    public DefaultPlayerCheckService(PlayerDao playerDao) {
+    public PlayerResolverImpl(PlayerDao playerDao) {
         this.playerDao = playerDao;
     }
 
@@ -22,8 +22,7 @@ public class DefaultPlayerCheckService implements PlayerCheckService {
         return new MatchParticipantIds(firstPlayerId, secondPlayerId);
     }
 
-    @Override
-    public Long getOrCreateId(String playerName) {
+    private Long getOrCreateId(String playerName) {
         Optional<Player> playerRaw = playerDao.findByName(playerName);
 
         if (playerRaw.isPresent()) {

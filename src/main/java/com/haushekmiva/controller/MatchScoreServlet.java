@@ -6,7 +6,7 @@ import com.haushekmiva.exceptions.InvalidParameterValueException;
 import com.haushekmiva.mapper.FinishedMatchMapper;
 import com.haushekmiva.mapper.MatchMapper;
 import com.haushekmiva.model.OngoingMatchScore;
-import com.haushekmiva.service.FinishedMatchPersistenceService;
+import com.haushekmiva.service.FinishedMatchPersistence;
 import com.haushekmiva.service.MatchScoreCalculator;
 import com.haushekmiva.service.OngoingMatchRepository;
 import jakarta.servlet.ServletContext;
@@ -28,7 +28,7 @@ public class MatchScoreServlet extends HttpServlet {
 
     private OngoingMatchRepository ongoingMatchRepository;
     private MatchScoreCalculator matchScoreCalculator;
-    private FinishedMatchPersistenceService finishedMatchPersistenceService;
+    private FinishedMatchPersistence finishedMatchPersistence;
 
     @Override
     public void init() throws ServletException {
@@ -38,8 +38,8 @@ public class MatchScoreServlet extends HttpServlet {
                 "ongoingMatchRepository");
         this.matchScoreCalculator = (MatchScoreCalculator) context.getAttribute(
                 "matchScoreCalculator");
-        this.finishedMatchPersistenceService =
-                (FinishedMatchPersistenceService) context.getAttribute("finishedMatchPersistenceService");
+        this.finishedMatchPersistence =
+                (FinishedMatchPersistence) context.getAttribute("finishedMatchPersistence");
     }
 
     @Override
@@ -71,7 +71,7 @@ public class MatchScoreServlet extends HttpServlet {
 
             forwardUser(request, response, "match-score.jsp");
         } else {
-            finishedMatchPersistenceService.saveFinishedMatch(ongoingMatchScore);
+            finishedMatchPersistence.saveFinishedMatch(ongoingMatchScore);
             ongoingMatchRepository.removeMatch(matchUuid);
             FinishedMatchDto finishedMatchDto = FinishedMatchMapper.INSTANCE.ongoingMatchScoreToFinishedMatchDto(ongoingMatchScore);
             request.setAttribute("finishedMatchDto", finishedMatchDto);

@@ -2,8 +2,6 @@ package com.haushekmiva.service;
 
 import com.haushekmiva.dto.MatchParticipantIds;
 
-public interface PlayerCheckService {
+public interface PlayerResolver {
     MatchParticipantIds getPlayerIds(String firstPlayerName, String secondPlayerName);
-
-    Long getOrCreateId(String playerName);
 }

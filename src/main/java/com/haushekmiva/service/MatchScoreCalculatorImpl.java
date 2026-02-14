@@ -3,7 +3,7 @@ package com.haushekmiva.service;
 import com.haushekmiva.model.OngoingMatchScore;
 
 
-public class DefaultMatchScoreCalculator implements MatchScoreCalculator {
+public class MatchScoreCalculatorImpl implements MatchScoreCalculator {
 
     private static final int POINTS_TO_WIN_GAME = 4;
     private static final int DIFFERENCE_TO_WIN_IN_DEUCE = 2;

@@ -9,12 +9,12 @@ import com.haushekmiva.model.Player;
 import java.util.List;
 import java.util.Objects;
 
-public class DefaultFinishedMatchService implements FinishedMatchPersistenceService {
+public class FinishedMatchPersistenceImpl implements FinishedMatchPersistence {
 
     private final PlayerDao playerDao;
     private final MatchDao matchDao;
 
-    public DefaultFinishedMatchService(PlayerDao playerDao, MatchDao matchDao) {
+    public FinishedMatchPersistenceImpl(PlayerDao playerDao, MatchDao matchDao) {
         this.playerDao = playerDao;
         this.matchDao = matchDao;
     }
@@ -27,6 +27,7 @@ public class DefaultFinishedMatchService implements FinishedMatchPersistenceServ
 
         Player firstPlayer = playerDao.getReferenceById(firstPlayerId);
         Player secondPlayer = playerDao.getReferenceById(secondPlayerId);
+
         Player winner = Objects.equals(winnerId, firstPlayerId)
                 ? firstPlayer
                 : secondPlayer;
