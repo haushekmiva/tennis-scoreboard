@@ -1,7 +1,6 @@
 package com.haushekmiva.filter;
 
 import com.haushekmiva.dto.ErrorDto;
-import com.haushekmiva.exceptions.DataAccessException;
 import com.haushekmiva.exceptions.InvalidParameterValueException;
 import com.haushekmiva.exceptions.MissingParameterException;
 import com.haushekmiva.exceptions.ResourceNotFoundException;
