@@ -11,6 +11,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 import java.io.IOException;
@@ -24,6 +26,8 @@ import static com.haushekmiva.validation.ObjectLevelValidation.checkFieldsEqual;
 
 @WebServlet("/new-match")
 public class NewMatchServlet extends HttpServlet {
+
+    private static final Logger log = LoggerFactory.getLogger(NewMatchServlet.class);
 
     private OngoingMatchRepository ongoingMatchRepository;
     private PlayerResolver playerResolver;
@@ -85,6 +89,7 @@ public class NewMatchServlet extends HttpServlet {
                 )
         );
 
+        log.info("New matched created (UUID: {})", matchUUID.toString());
         response.sendRedirect(request.getContextPath() + "/match-score?uuid=" + matchUUID.toString());
     }
 

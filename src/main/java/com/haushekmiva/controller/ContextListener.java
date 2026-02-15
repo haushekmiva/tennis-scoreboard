@@ -12,10 +12,14 @@ import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 @WebListener
 public class ContextListener implements ServletContextListener {
+
+    private static final Logger log = LoggerFactory.getLogger(ContextListener.class);
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
@@ -45,7 +49,7 @@ public class ContextListener implements ServletContextListener {
         context.setAttribute("ongoingMatchOrchestrator", ongoingMatchOrchestrator);
 
 
-        System.out.println("Application started.");
+        log.info("Application started.");
     }
 
 }

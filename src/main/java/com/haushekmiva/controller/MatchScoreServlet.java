@@ -77,7 +77,6 @@ public class MatchScoreServlet extends HttpServlet {
     }
 
     private Long extractPlayerId(HttpServletRequest request) {
-        request.getParameter("playerId");
         try {
             return Long.valueOf(request.getParameter("playerId"));
         } catch (NumberFormatException e) {

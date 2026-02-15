@@ -9,6 +9,8 @@ import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
@@ -16,6 +18,9 @@ import static com.haushekmiva.utils.ResponseUtils.forwardUser;
 
 @WebFilter("/*")
 public class ErrorHandlingFilter implements Filter {
+
+    private static final Logger log = LoggerFactory.getLogger(ErrorHandlingFilter.class);
+
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
@@ -37,6 +42,7 @@ public class ErrorHandlingFilter implements Filter {
                             e.getMessage())
             );
         } catch (Exception e) {
+            log.error("Internal server error", e);
             forwardUserToErrorPage(
                     request,
                     response,
