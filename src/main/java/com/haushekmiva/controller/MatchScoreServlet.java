@@ -1,13 +1,13 @@
 package com.haushekmiva.controller;
 
 import com.haushekmiva.dto.FinishedMatchDto;
+import com.haushekmiva.dto.MoveResult;
 import com.haushekmiva.dto.OngoingMatchScoreDto;
 import com.haushekmiva.exceptions.InvalidParameterValueException;
 import com.haushekmiva.mapper.FinishedMatchMapper;
 import com.haushekmiva.mapper.MatchMapper;
 import com.haushekmiva.model.OngoingMatchScore;
-import com.haushekmiva.service.FinishedMatchPersistence;
-import com.haushekmiva.service.MatchScoreCalculator;
+import com.haushekmiva.service.OngoingMatchOrchestrator;
 import com.haushekmiva.service.OngoingMatchRepository;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
@@ -27,8 +27,7 @@ import static com.haushekmiva.validation.RequestValidation.checkRequestParameter
 public class MatchScoreServlet extends HttpServlet {
 
     private OngoingMatchRepository ongoingMatchRepository;
-    private MatchScoreCalculator matchScoreCalculator;
-    private FinishedMatchPersistence finishedMatchPersistence;
+    private OngoingMatchOrchestrator ongoingMatchOrchestrator;
 
     @Override
     public void init() throws ServletException {
@@ -36,17 +35,13 @@ public class MatchScoreServlet extends HttpServlet {
         ServletContext context = getServletContext();
         this.ongoingMatchRepository = (OngoingMatchRepository) context.getAttribute(
                 "ongoingMatchRepository");
-        this.matchScoreCalculator = (MatchScoreCalculator) context.getAttribute(
-                "matchScoreCalculator");
-        this.finishedMatchPersistence =
-                (FinishedMatchPersistence) context.getAttribute("finishedMatchPersistence");
+        this.ongoingMatchOrchestrator = (OngoingMatchOrchestrator)  context.getAttribute("ongoingMatchOrchestrator");
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         UUID matchUuid = extractUuid(request);
         OngoingMatchScore ongoingMatchScore = ongoingMatchRepository.getMatch(matchUuid);
-
         OngoingMatchScoreDto ongoingMatchScoreDto = MatchMapper.INSTANCE.ongoingMatchScoreToDto(ongoingMatchScore);
         request.setAttribute("ongoingMatchScoreDto", ongoingMatchScoreDto);
 
@@ -58,25 +53,16 @@ public class MatchScoreServlet extends HttpServlet {
         UUID matchUuid = extractUuid(request);
         Long playerId = extractPlayerId(request);
 
-        OngoingMatchScore ongoingMatchScore = ongoingMatchRepository.getMatch(matchUuid);
+        MoveResult moveResult = ongoingMatchOrchestrator.processMove(matchUuid, playerId);
 
-        matchScoreCalculator.doMove(ongoingMatchScore, playerId);
-
-        // как будто часть бизнес логики просочилась в сервлет
-        // можно добавить класс-сервис который это будет дерижировать этим и все это в себе скроет
-        // мы просто вызываем метод process(score) и он уже там внутри все обьединяет
-        if (!ongoingMatchScore.isMatchFinished()) {
-            OngoingMatchScoreDto ongoingMatchScoreDto = MatchMapper.INSTANCE.ongoingMatchScoreToDto(ongoingMatchScore);
-            request.setAttribute("ongoingMatchScoreDto", ongoingMatchScoreDto);
-
-            forwardUser(request, response, "match-score.jsp");
-        } else {
-            finishedMatchPersistence.saveFinishedMatch(ongoingMatchScore);
-            ongoingMatchRepository.removeMatch(matchUuid);
-            FinishedMatchDto finishedMatchDto = FinishedMatchMapper.INSTANCE.ongoingMatchScoreToFinishedMatchDto(ongoingMatchScore);
+        if (moveResult.isMatchFinished()) {
+            FinishedMatchDto finishedMatchDto = FinishedMatchMapper.INSTANCE.ongoingMatchScoreToFinishedMatchDto(moveResult.score());
             request.setAttribute("finishedMatchDto", finishedMatchDto);
-
             forwardUser(request, response, "finished-match-score.jsp");
+        } else {
+            OngoingMatchScoreDto ongoingMatchScoreDto = MatchMapper.INSTANCE.ongoingMatchScoreToDto(moveResult.score());
+            request.setAttribute("ongoingMatchScoreDto", ongoingMatchScoreDto);
+            forwardUser(request, response, "match-score.jsp");
         }
     }
 

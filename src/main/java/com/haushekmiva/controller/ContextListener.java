@@ -24,23 +24,26 @@ public class ContextListener implements ServletContextListener {
         configuration.configure("hibernate.cfg.xml");
 
         SessionFactory sessionFactory = configuration.buildSessionFactory();
-        context.setAttribute("sessionFactory", sessionFactory);
-
-        OngoingMatchRepository ongoingMatchRepository = new InMemoryOngoingMatchRepository();
-        context.setAttribute("ongoingMatchRepository", ongoingMatchRepository);
 
         PlayerDao playerDao = new PlayerHibernateDao(sessionFactory);
         MatchDao matchDao = new MatchHibernateDao(sessionFactory);
 
+        OngoingMatchRepository ongoingMatchRepository = new InMemoryOngoingMatchRepository();
         PlayerResolver playerResolver = new PlayerResolverImpl(playerDao);
-        context.setAttribute("playerResolver", playerResolver);
-
-        FinishedMatchPersistence finishedMatchPersistence =
-                new FinishedMatchPersistenceImpl(playerDao, matchDao);
-        context.setAttribute("finishedMatchPersistence", finishedMatchPersistence);
-
+        FinishedMatchPersistence finishedMatchPersistence = new FinishedMatchPersistenceImpl(playerDao, matchDao);
         MatchScoreCalculator matchScoreCalculator = new MatchScoreCalculatorImpl();
+        OngoingMatchOrchestrator ongoingMatchOrchestrator = new OngoingMatchOrchestratorImpl(
+                ongoingMatchRepository,
+                matchScoreCalculator,
+                finishedMatchPersistence
+        );
+
+        context.setAttribute("ongoingMatchRepository", ongoingMatchRepository);
+        context.setAttribute("playerResolver", playerResolver);
+        context.setAttribute("finishedMatchPersistence", finishedMatchPersistence);
         context.setAttribute("matchScoreCalculator", matchScoreCalculator);
+        context.setAttribute("ongoingMatchOrchestrator", ongoingMatchOrchestrator);
+
 
         System.out.println("Application started.");
     }
