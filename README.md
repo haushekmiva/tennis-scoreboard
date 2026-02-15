@@ -15,3 +15,28 @@ Frontend: JSP, JSTL, CSS
 
 ## Запуск проекта
 
+### Требования
+- Java 17+
+- Maven 3.9+
+- Tomcat 11+ (или любой Jakarta EE 10 совместимый сервер)
+
+### Шаги
+1. Клонировать репозиторий:
+```bash
+git clone https://github.com/haushekmiva/tennis-scoreboard.git
+cd tennis-scoreboard
+```
+
+2. Собрать проект:
+```bash
+mvn clean package
+```
+
+3. Развернуть WAR-файл:
+   - Скопировать `target/tennis-scoreboard.war` в `tomcat/webapps/`
+   - Запустить Tomcat
+
+4. Открыть в браузере:
+```
+http://localhost:8080/tennis-scoreboard
+```
