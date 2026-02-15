@@ -5,11 +5,16 @@ import com.haushekmiva.model.Match;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 
 public class MatchHibernateDao extends HibernateDao<Match, Long> implements MatchDao {
+
+    private static final Logger log = LoggerFactory.getLogger(MatchHibernateDao.class);
+
 
     public MatchHibernateDao(SessionFactory sessionFactory) {
         super(Match.class, sessionFactory);
@@ -21,7 +26,8 @@ public class MatchHibernateDao extends HibernateDao<Match, Long> implements Matc
             return session.createQuery("select count(e) from Match e", Long.class)
                     .uniqueResult();
         } catch (HibernateException e) {
-            throw new DataAccessException("Ошибка при получении кол-ва записей из бд.", e);
+            log.error("Failed to get match count", e);
+            throw new DataAccessException("Failed to get match count.", e);
         }
     }
 
@@ -32,7 +38,8 @@ public class MatchHibernateDao extends HibernateDao<Match, Long> implements Matc
                     .setParameter("name", "%" + playerName + "%")
                     .uniqueResult();
         } catch (HibernateException e) {
-            throw new DataAccessException("Ошибка при получении кол-ва записей из бд.", e);
+            log.error("Failed to get match count by player name", e);
+            throw new DataAccessException("Failed to get match count by player name", e);
         }
     }
 
@@ -45,7 +52,8 @@ public class MatchHibernateDao extends HibernateDao<Match, Long> implements Matc
                     .list();
         }
         catch (HibernateException e) {
-            throw new DataAccessException("Ошибка при получении данных из бд.");
+            log.error("An error occurred while getting matches subset.", e);
+            throw new DataAccessException("An error occurred while getting matches subset.", e);
         }
     }
 
@@ -60,7 +68,8 @@ public class MatchHibernateDao extends HibernateDao<Match, Long> implements Matc
                     .list();
         }
         catch (HibernateException e) {
-            throw new DataAccessException("Ошибка при получении данных из бд.");
+            log.error("An error occurred while getting matches subset by player name.", e);
+            throw new DataAccessException("An error occurred while getting matches subset by player name.");
         }
     }
 

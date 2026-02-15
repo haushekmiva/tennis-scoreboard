@@ -5,11 +5,15 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.Optional;
 
 public abstract class HibernateDao<T, ID extends Serializable> {
+
+    private static final Logger log = LoggerFactory.getLogger(HibernateDao.class);
 
     private final Class<T> entityClass;
     private final SessionFactory sessionFactory;
@@ -26,11 +30,12 @@ public abstract class HibernateDao<T, ID extends Serializable> {
             Long id = (Long) session.save(entity);
             transaction.commit();
             return id;
-        } catch (HibernateException e) { // TODO: сузить исключения и создать более конкретные
+        } catch (HibernateException e) {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataAccessException("Ошибка при сохранении сущности", e);
+            log.error("Failed to save {} entity", entity.getClass().getSimpleName(), e);
+            throw new DataAccessException("An error occurred while saving entity.", e);
         }
     }
 
