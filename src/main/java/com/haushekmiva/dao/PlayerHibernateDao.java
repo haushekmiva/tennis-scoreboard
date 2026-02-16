@@ -33,7 +33,7 @@ public class PlayerHibernateDao extends HibernateDao<Player, Long> implements Pl
                 return Optional.empty();
             } else return Optional.of(players.get(0));
         } catch (HibernateException e) {
-            log.error("Failed to save Player entity", e);
+            log.error("Failed to find Player by name: {}", name, e);
             throw new DataAccessException(e);
         }
     }

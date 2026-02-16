@@ -89,7 +89,7 @@ public class NewMatchServlet extends HttpServlet {
                 )
         );
 
-        log.info("New matched created (UUID: {})", matchUUID.toString());
+        log.info("New match created (UUID: {})", matchUUID);
         response.sendRedirect(request.getContextPath() + "/match-score?uuid=" + matchUUID.toString());
     }
 
