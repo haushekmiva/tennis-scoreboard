@@ -1,5 +1,5 @@
 # Tennis Scoreboard
-Веб-приложение, реализующее табло счёта теннисного матча выполненное по ТЗ из роадмапа [Сергея жукова](https://zhukovsd.github.io/java-backend-learning-course/projects/tennis-scoreboard/).
+Веб-приложение, реализующее табло счёта теннисного матча выполненное по ТЗ из роадмапа [Сергея Жукова](https://zhukovsd.github.io/java-backend-learning-course/projects/tennis-scoreboard/).
 
 <img width="1901" height="907" alt="изображение" src="https://github.com/user-attachments/assets/53eccc8d-2324-4045-92ba-1422263fa18b" />
 
@@ -40,3 +40,8 @@ mvn clean package
 ```
 http://localhost:8080/tennis-scoreboard
 ```
+
+## Ссылки
+- **Live Demo:** http://83.222.24.156:8080/tennis-scoreboard/
+- **Roadmap:** [zhukovsd/java-backend-learning-course](https://zhukovsd.github.io/java-backend-learning-course/projects/tennis-scoreboard/)
+
