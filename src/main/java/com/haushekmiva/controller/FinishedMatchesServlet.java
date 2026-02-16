@@ -44,7 +44,7 @@ public class FinishedMatchesServlet extends HttpServlet {
         String pageNumberRaw = request.getParameter("page");
         int pageNumber = parsePageNumber(pageNumberRaw);
 
-        if (pageNumber < 0) {
+        if (pageNumber <= 0) {
             redirectToPage(response, playerName, 1);
             return;
         }
