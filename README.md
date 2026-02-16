@@ -43,5 +43,5 @@ http://localhost:8080/tennis-scoreboard
 
 ## Ссылки
 - **Live Demo:** http://83.222.24.156:8080/tennis-scoreboard/
-- **Roadmap:** [zhukovsd/java-backend-learning-course](https://zhukovsd.github.io/java-backend-learning-course/projects/tennis-scoreboard/)
+- **Roadmap:** [zhukovsd/java-backend-learning-course](https://zhukovsd.github.io/java-backend-learning-course/)
 
