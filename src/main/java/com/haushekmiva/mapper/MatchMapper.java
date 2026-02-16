@@ -13,7 +13,6 @@ public interface MatchMapper {
 
     MatchMapper INSTANCE = Mappers.getMapper(MatchMapper.class);
 
-    // подумай о том что делает геттеры
     @Mapping(target = "firstPlayerName", expression = "java(ongoingMatchScore.getFirstPlayerName())")
     @Mapping(target = "firstPlayerId", expression = "java(String.valueOf(ongoingMatchScore.getFirstPlayerId()))")
     @Mapping(source = ".", target = "firstPlayerPoints", qualifiedByName = "getFirstPlayerPoints")
